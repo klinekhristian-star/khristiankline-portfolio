@@ -12,6 +12,21 @@
         btn.setAttribute("aria-expanded", "false");
       });
     });
+    var swipe = { on: false, x: 0, y: 0 };
+    nav.addEventListener("pointerdown", function (e) {
+      if (!nav.classList.contains("open")) return;
+      swipe = { on: true, x: e.clientX, y: e.clientY };
+    });
+    nav.addEventListener("pointerup", function (e) {
+      if (!swipe.on) return;
+      swipe.on = false;
+      var dx = e.clientX - swipe.x;
+      var dy = e.clientY - swipe.y;
+      if (dx < -56 && Math.abs(dx) > Math.abs(dy)) {
+        nav.classList.remove("open");
+        btn.setAttribute("aria-expanded", "false");
+      }
+    });
   }
   var y = document.getElementById("year");
   if (y) y.textContent = String(new Date().getFullYear());

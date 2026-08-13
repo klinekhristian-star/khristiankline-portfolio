@@ -30,6 +30,8 @@
     time: document.getElementById("vTime"),
     vol: document.getElementById("vVol"),
     original: document.getElementById("btnOriginal"),
+    track: document.getElementById("stageTrack"),
+    hint: document.getElementById("gestureHint"),
   };
 
   var state = blankState();
@@ -70,6 +72,8 @@
   function openTheater() {
     theater.hidden = false;
     document.body.classList.add("theater-open");
+    resetTrack(false);
+    flashHint();
   }
 
   function closeTheater() {
@@ -84,6 +88,7 @@
     if (els.office) els.office.removeAttribute("src");
     revokeBlobs();
     state = blankState();
+    resetTrack(false);
     if (document.fullscreenElement) document.exitFullscreen().catch(function () {});
   }
 
@@ -130,12 +135,65 @@
     renderDots();
   }
 
-  function go(n) {
-    if (!state.pages) return;
-    state.page = Math.max(1, Math.min(state.pages, n));
+  function prefersReduced() {
+    return window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  }
+
+  function flashHint() {
+    if (!els.hint) return;
+    try {
+      if (sessionStorage.getItem("kk-gestures")) return;
+      sessionStorage.setItem("kk-gestures", "1");
+    } catch (e) {}
+    els.hint.hidden = false;
+    requestAnimationFrame(function () { els.hint.classList.add("show"); });
+    setTimeout(function () { els.hint.classList.remove("show"); }, 3400);
+  }
+
+  function resetTrack(animate) {
+    if (!els.track) return;
+    els.track.classList.toggle("is-settling", !!animate);
+    els.track.classList.remove("is-dragging");
+    els.track.style.transform = "translate3d(0,0,0)";
+    els.track.style.opacity = "1";
+  }
+
+  function moveTrack(x, y, animate) {
+    if (!els.track) return;
+    els.track.classList.toggle("is-settling", !!animate);
+    els.track.classList.toggle("is-dragging", !animate);
+    els.track.style.transform = "translate3d(" + x + "px," + y + "px,0)";
+    var fade = y > 8 ? Math.max(0.28, 1 - y / 420) : 1;
+    els.track.style.opacity = String(fade);
+  }
+
+  function paintPage() {
     if (state.mode === "pdf") drawPdfPage();
     else if (state.mode === "pptx") drawPptx();
     updateChrome();
+  }
+
+  function go(n, how) {
+    if (!state.pages) return;
+    n = Math.max(1, Math.min(state.pages, n));
+    var dir = n > state.page ? 1 : n < state.page ? -1 : 0;
+    if (!dir) return;
+    if (how === "animate" && !prefersReduced() && els.track) {
+      var w = els.stage.clientWidth || 320;
+      moveTrack(-dir * w, 0, true);
+      setTimeout(function () {
+        state.page = n;
+        paintPage();
+        moveTrack(dir * w * 0.28, 0, false);
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () { resetTrack(true); });
+        });
+      }, 260);
+      return;
+    }
+    state.page = n;
+    paintPage();
+    resetTrack(false);
   }
 
   function drawPdfPage() {
@@ -393,8 +451,8 @@
   }
 
   els.close.addEventListener("click", closeTheater);
-  els.prev.addEventListener("click", function () { go(state.page - 1); });
-  els.next.addEventListener("click", function () { go(state.page + 1); });
+  els.prev.addEventListener("click", function () { go(state.page - 1, "animate"); });
+  els.next.addEventListener("click", function () { go(state.page + 1, "animate"); });
   els.fs.addEventListener("click", function () {
     if (!document.fullscreenElement) theater.requestFullscreen().catch(function () {});
     else document.exitFullscreen().catch(function () {});
@@ -420,8 +478,8 @@
       return;
     }
     if (state.mode === "office") return;
-    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(state.page + 1); }
-    if (e.key === "ArrowLeft") go(state.page - 1);
+    if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); go(state.page + 1, "animate"); }
+    if (e.key === "ArrowLeft") go(state.page - 1, "animate");
     if (e.key === "Home") go(1);
     if (e.key === "End") go(state.pages);
   });
@@ -430,35 +488,169 @@
     if (state.mode === "pdf" && state.pdf) drawPdfPage();
   });
 
-  var swipe = { x: 0, y: 0, on: false };
-  els.stage.addEventListener("pointerdown", function (e) {
-    if (state.mode === "video" || state.mode === "office") return;
-    swipe = { x: e.clientX, y: e.clientY, on: true };
-  });
-  els.stage.addEventListener("pointerup", function (e) {
-    if (!swipe.on) return;
-    swipe.on = false;
-    var dx = e.clientX - swipe.x;
-    var dy = e.clientY - swipe.y;
-    if (Math.abs(dx) < 48 || Math.abs(dx) < Math.abs(dy)) {
-      if (Math.abs(dx) < 8 && Math.abs(dy) < 8) {
-        var rect = els.stage.getBoundingClientRect();
-        var rel = (e.clientX - rect.left) / rect.width;
-        if (rel < 0.22) go(state.page - 1);
-        else if (rel > 0.78) go(state.page + 1);
-      }
+  var g = {
+    on: false,
+    id: 0,
+    x0: 0,
+    y0: 0,
+    t0: 0,
+    x: 0,
+    y: 0,
+    axis: null,
+    dragged: false,
+    lastTap: 0,
+    lastTapX: 0,
+    lastTapY: 0,
+    playTimer: 0,
+  };
+
+  function ignoreFrom(target) {
+    if (!target || !target.closest) return false;
+    return !!target.closest(".theater-bar, .theater-dots, .v-controls, button, input, a, iframe");
+  }
+
+  function canSlide() {
+    return state.mode === "pdf" || state.mode === "pptx";
+  }
+
+  function finishDrag(e) {
+    if (!g.on) return;
+    g.on = false;
+    try { els.stage.releasePointerCapture(g.id); } catch (err) {}
+
+    var dx = (e.clientX || g.x) - g.x0;
+    var dy = (e.clientY || g.y) - g.y0;
+    var dt = Math.max(16, Date.now() - g.t0);
+    var vx = dx / dt;
+    var vy = dy / dt;
+    var w = els.stage.clientWidth || 320;
+    var h = els.stage.clientHeight || 480;
+
+    if ((g.axis === "y" && dy > Math.max(72, h * 0.12)) || (g.axis === "y" && vy > 0.55 && dy > 36)) {
+      moveTrack(0, h, true);
+      setTimeout(closeTheater, prefersReduced() ? 0 : 200);
       return;
     }
-    if (dx < 0) go(state.page + 1);
-    else go(state.page - 1);
+
+    if (canSlide() && g.axis === "x") {
+      var atStart = state.page <= 1;
+      var atEnd = state.page >= state.pages;
+      var commitNext = (!atEnd && (dx < -Math.max(48, w * 0.14) || vx < -0.45));
+      var commitPrev = (!atStart && (dx > Math.max(48, w * 0.14) || vx > 0.45));
+      if (commitNext) {
+        moveTrack(-w, 0, true);
+        setTimeout(function () {
+          state.page += 1;
+          paintPage();
+          resetTrack(false);
+        }, prefersReduced() ? 0 : 240);
+        return;
+      }
+      if (commitPrev) {
+        moveTrack(w, 0, true);
+        setTimeout(function () {
+          state.page -= 1;
+          paintPage();
+          resetTrack(false);
+        }, prefersReduced() ? 0 : 240);
+        return;
+      }
+    }
+
+    resetTrack(true);
+
+    if (!g.dragged && g.axis === null) {
+      var now = Date.now();
+      var isDouble =
+        now - g.lastTap < 300 &&
+        Math.abs((e.clientX || 0) - g.lastTapX) < 28 &&
+        Math.abs((e.clientY || 0) - g.lastTapY) < 28;
+      if (g.playTimer) {
+        clearTimeout(g.playTimer);
+        g.playTimer = 0;
+      }
+      if (isDouble) {
+        g.lastTap = 0;
+        if (!document.fullscreenElement) theater.requestFullscreen().catch(function () {});
+        else document.exitFullscreen().catch(function () {});
+        return;
+      }
+      g.lastTap = now;
+      g.lastTapX = e.clientX || 0;
+      g.lastTapY = e.clientY || 0;
+      if (canSlide()) {
+        var rect = els.stage.getBoundingClientRect();
+        var rel = ((e.clientX || 0) - rect.left) / rect.width;
+        if (rel < 0.28) go(state.page - 1, "animate");
+        else if (rel > 0.72) go(state.page + 1, "animate");
+      } else if (state.mode === "video") {
+        g.playTimer = setTimeout(function () {
+          g.playTimer = 0;
+          togglePlay();
+        }, 280);
+      }
+    }
+  }
+
+  els.stage.addEventListener("pointerdown", function (e) {
+    if (theater.hidden || state.mode === "office") return;
+    if (ignoreFrom(e.target)) return;
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    g.on = true;
+    g.id = e.pointerId;
+    g.x0 = g.x = e.clientX;
+    g.y0 = g.y = e.clientY;
+    g.t0 = Date.now();
+    g.axis = null;
+    g.dragged = false;
+    try { els.stage.setPointerCapture(e.pointerId); } catch (err) {}
   });
+
+  els.stage.addEventListener("pointermove", function (e) {
+    if (!g.on || e.pointerId !== g.id) return;
+    g.x = e.clientX;
+    g.y = e.clientY;
+    var dx = g.x - g.x0;
+    var dy = g.y - g.y0;
+    if (!g.axis && (Math.abs(dx) > 8 || Math.abs(dy) > 8)) {
+      g.axis = Math.abs(dx) > Math.abs(dy) * 1.05 ? "x" : "y";
+    }
+    if (!g.axis) return;
+    if (Math.abs(dx) > 10 || Math.abs(dy) > 10) g.dragged = true;
+    if (g.axis === "x" && canSlide()) {
+      e.preventDefault();
+      var atStart = state.page <= 1 && dx > 0;
+      var atEnd = state.page >= state.pages && dx < 0;
+      var x = (atStart || atEnd) ? dx * 0.28 : dx;
+      moveTrack(x, 0, false);
+    } else if (g.axis === "y" && dy > 0) {
+      e.preventDefault();
+      moveTrack(0, dy, false);
+    }
+  });
+
+  els.stage.addEventListener("pointerup", finishDrag);
+  els.stage.addEventListener("pointercancel", function (e) {
+    if (!g.on) return;
+    g.on = false;
+    resetTrack(true);
+  });
+
+  theater.addEventListener("touchmove", function (e) {
+    if (g.on && g.axis) e.preventDefault();
+  }, { passive: false });
 
   function togglePlay() {
     if (els.video.paused) els.video.play();
     else els.video.pause();
   }
   els.play.addEventListener("click", togglePlay);
-  els.video.addEventListener("click", togglePlay);
+  els.video.addEventListener("click", function (e) {
+    if (g.dragged) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+  }, true);
   els.video.addEventListener("play", function () { els.play.textContent = "Pause"; });
   els.video.addEventListener("pause", function () { els.play.textContent = "Play"; });
   els.video.addEventListener("timeupdate", function () {

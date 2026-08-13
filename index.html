@@ -227,7 +227,7 @@
         <div class="block-head">
           <p class="block-label">05 — Screen</p>
           <h2>Decks & film</h2>
-          <p>Viewers open a PDF or PowerPoint as a slideshow — arrows, dots, swipe, fullscreen. Hosted MP4s play in the same theater. Drop a file to preview; nothing leaves this browser. When your real briefs and footage are ready, they replace the samples.</p>
+          <p>Viewers open a PDF or PowerPoint as a slideshow. On a phone: swipe to change slides, tap the sides, double-tap for fullscreen, pull down to close. Hosted MP4s play in the same theater. Drop a file to preview; nothing leaves this browser.</p>
         </div>
 
         <div class="screen-split">
@@ -283,19 +283,22 @@
       </div>
     </div>
     <div class="theater-stage" id="theaterStage">
-      <canvas id="pdfCanvas" hidden></canvas>
-      <div class="pptx-slide" id="pptxSlide" hidden></div>
-      <iframe class="office-frame" id="officeFrame" title="PowerPoint" hidden></iframe>
-      <div class="video-wrap" id="videoWrap" hidden>
-        <video id="theaterVideo" playsinline></video>
-        <div class="v-controls">
-          <button type="button" class="t-btn" id="btnPlay">Play</button>
-          <input type="range" id="vSeek" min="0" max="1000" value="0" aria-label="Seek" />
-          <span class="v-time" id="vTime">0:00 / 0:00</span>
-          <input type="range" id="vVol" min="0" max="1" step="0.05" value="1" aria-label="Volume" />
+      <div class="stage-track" id="stageTrack">
+        <canvas id="pdfCanvas" hidden></canvas>
+        <div class="pptx-slide" id="pptxSlide" hidden></div>
+        <iframe class="office-frame" id="officeFrame" title="PowerPoint" hidden></iframe>
+        <div class="video-wrap" id="videoWrap" hidden>
+          <video id="theaterVideo" playsinline></video>
+          <div class="v-controls">
+            <button type="button" class="t-btn" id="btnPlay">Play</button>
+            <input type="range" id="vSeek" min="0" max="1000" value="0" aria-label="Seek" />
+            <span class="v-time" id="vTime">0:00 / 0:00</span>
+            <input type="range" id="vVol" min="0" max="1" step="0.05" value="1" aria-label="Volume" />
+          </div>
         </div>
       </div>
       <p class="theater-status" id="theaterStatus"></p>
+      <p class="gesture-hint" id="gestureHint" hidden>Swipe · tap sides · pull down to close</p>
     </div>
     <div class="theater-dots" id="theaterDots"></div>
   </div>
