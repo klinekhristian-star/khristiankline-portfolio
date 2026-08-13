@@ -28,11 +28,13 @@
   function mediaUrl(path) {
     if (!path) return "";
     if (/^https?:\/\//i.test(path)) return path;
-    if (!ON_PROD) return path;
-    if (/\.pptx?$/i.test(path)) return RAW_BASE + path;
-    // PDFs: prefer raw GitHub so multi-page books load reliably
-    if (/\.pdf$/i.test(path)) return RAW_BASE + path;
-    return CDN_BASE + path;
+    // Encode each path segment so spaces in filenames work
+    var encoded = path.split("/").map(function (seg) {
+      return seg ? encodeURIComponent(seg) : "";
+    }).join("/");
+    if (!ON_PROD) return encoded;
+    if (/\.pptx?$/i.test(path) || /\.pdf$/i.test(path)) return RAW_BASE + encoded;
+    return CDN_BASE + encoded;
   }
 
   var EXPERIENCES = [
@@ -72,15 +74,15 @@
       year: "2006–2007",
       tone: "c",
       summary: "Fashion and lifestyle programs under Tribeca Enterprises — hybrid activations for a global apparel brand.",
-      description: "Campaign and experience programs for Diesel produced in the Tribeca Enterprises period — live moments coordinated with digital distribution.\n\nThe multi-page Diesel book opens as a full-screen slideshow (swipe or use Prev / Next).",
+      description: "Campaign and experience programs for Diesel produced in the Tribeca Enterprises period — live moments coordinated with digital distribution.\n\nOpen the multi-page Diesel book as a full-screen slideshow (swipe or use Prev / Next).",
       role: "Campaign · Hybrid",
       images: [],
       slideshows: [
         {
           kind: "pdf",
-          src: "/media/experiences/diesel-book.pdf",
+          src: "/media/experiences/Diesel Book v8.pdf",
           label: "View Diesel book",
-          title: "Diesel book"
+          title: "Diesel Book"
         }
       ],
       videos: []
