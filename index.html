@@ -1,241 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Khristian Kline — web development, experience and production for digital products and live programs." />
-  <title>Khristian Kline</title>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@6d0d1e0/styles.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Khristian Kline</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@6d0d1e0/styles.css"/>
+<style>
+.exp-list{display:flex;flex-direction:column}
+.exp-list .panel{cursor:pointer;width:100%;text-align:left;border:none;font:inherit;color:inherit;background:transparent;display:block;padding:0}
+.showcase-media{display:flex;flex-wrap:wrap;gap:.65rem;margin:0 0 1.5rem}
+.showcase-media-empty{font-size:.9rem;color:rgba(245,242,235,.55);max-width:36rem;margin:0 0 1rem}
+</style>
 </head>
 <body>
-  <div class="shell">
-    <aside class="sidebar" aria-label="Primary">
-      <a href="#top" class="logo" aria-label="Khristian Kline home">KK</a>
-      <nav class="side-nav">
-        <a href="#web-development">Web</a>
-        <a href="#experience-production">Experience</a>
-        <a href="#lab">Lab</a>
-        <a href="#screen">Screen</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <span class="side-footer">khristiankline.com</span>
-    </aside>
-    <div class="main">
-      <div class="mobile-bar">
-        <a href="#top" class="logo">KK</a>
-        <button type="button" class="burger" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
-      </div>
-      <nav class="mobile-drawer" id="mobileNav" aria-label="Mobile">
-        <a href="#web-development">Web Development</a>
-        <a href="#experience-production">Experience &amp; Production</a>
-        <a href="#lab">Lab</a>
-        <a href="#screen">Screen</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <header class="hero" id="top">
-        <h1 class="hero-name">Khristian Kline</h1>
-        <div class="hero-roles" aria-label="Roles">
-          <span>Web Development</span>
-          <span>Experience &amp; Production</span>
-          <span>Virtual &amp; In-person</span>
-        </div>
-        <p class="hero-note">Digital products, live experiences, and program systems for brands that need craft under real constraints.</p>
-      </header>
-      <section class="block" id="web-development">
-        <div class="block-head">
-          <p class="block-label">01 — Web Development</p>
-          <h2>Sites &amp; product surfaces</h2>
-          <p>Live and in-development websites spanning consulting, non-profit, streaming, nutrition, job search, and emergency communications.</p>
-        </div>
-        <div class="web-group" id="webLiveGroup">
-          <div class="web-group-head"><h3 class="web-group-label">Live</h3></div>
-          <div class="web-list" id="webLiveList"></div>
-        </div>
-        <div class="web-group" id="webDevGroup">
-          <div class="web-group-head"><h3 class="web-group-label">In development</h3></div>
-          <div class="web-list" id="webDevList"></div>
-        </div>
-        <div class="web-admin owner-only" id="webAdmin" hidden>
-          <div class="web-admin-bar">
-            <span>Websites admin</span>
-            <button type="button" class="t-btn" id="webAdminAdd">Add site</button>
-            <button type="button" class="t-btn" id="webAdminReset">Reset defaults</button>
-          </div>
-          <div id="webAdminList"></div>
-        </div>
-      </section>
-      <div class="showcase" id="showcase" hidden aria-hidden="true">
-        <div class="showcase-backdrop" data-close-showcase></div>
-        <div class="showcase-panel" role="dialog" aria-modal="true" aria-labelledby="scTitle">
-          <button type="button" class="showcase-close" data-close-showcase aria-label="Close">×</button>
-          <div class="showcase-scroll">
-            <div class="showcase-hero" id="scHero"></div>
-            <div class="showcase-body">
-              <p class="showcase-status" id="scStatus"></p>
-              <h2 class="showcase-title" id="scTitle"></h2>
-              <p class="showcase-summary" id="scSummary"></p>
-              <div class="showcase-meta" id="scMeta"></div>
-              <div class="showcase-desc" id="scDesc"></div>
-              <div class="showcase-stack" id="scStack"></div>
-              <div class="showcase-shots" id="scShots"></div>
-              <a class="showcase-link" id="scLink" target="_blank" rel="noopener" hidden>Visit site →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-      <section class="block" id="experience-production">
-        <div class="block-head">
-          <p class="block-label">02 — Experience &amp; Production</p>
-          <h2>In-person, virtual, and hybrid programs</h2>
-          <p>From touring digital film festivals to brand launches and executive virtual briefings — experience design and executive production as one practice.</p>
-        </div>
-        <article class="panel tone-a">
-          <div class="panel-deco" aria-hidden="true"></div>
-          <div class="panel-inner">
-            <p class="panel-client">RES Media Group</p>
-            <h3 class="panel-title">RESFEST</h3>
-            <p class="panel-summary">Global touring digital film festival — curation, city operations, and live audience design across dozens of markets at the height of the digital filmmaking wave.</p>
-            <div class="panel-meta"><span>In-person</span><span>2002–2006</span><span>40+ cities · Festival &amp; live</span></div>
-          </div>
-        </article>
-        <article class="panel tone-b">
-          <div class="panel-deco" aria-hidden="true"></div>
-          <div class="panel-inner">
-            <p class="panel-client">InBev · Brahma</p>
-            <h3 class="panel-title">Brahma beer launch</h3>
-            <p class="panel-summary">Brand launch activation spanning live presence and digital extension — sponsorship-grade production for a global beverage house during the RES and early Tribeca years.</p>
-            <div class="panel-meta"><span>Virtual + In-person</span><span>Mid-2000s</span><span>Launch · Hybrid</span></div>
-          </div>
-        </article>
-        <article class="panel tone-c">
-          <div class="panel-deco" aria-hidden="true"></div>
-          <div class="panel-inner">
-            <p class="panel-client">Diesel</p>
-            <h3 class="panel-title">Diesel campaign programs</h3>
-            <p class="panel-summary">Fashion and lifestyle program work under Tribeca Enterprises — hybrid activations that paired live moments with digital reach for a global apparel brand.</p>
-            <div class="panel-meta"><span>Virtual + In-person</span><span>2006–2007</span><span>Campaign · Hybrid</span></div>
-          </div>
-        </article>
-        <article class="panel tone-d">
-          <div class="panel-deco" aria-hidden="true"></div>
-          <div class="panel-inner">
-            <p class="panel-client">Nike</p>
-            <h3 class="panel-title">Nike Ginga launch</h3>
-            <p class="panel-summary">Curated original content and live screening events around Nike’s Ginga film — the soul of Brazilian football as brand storytelling, paired with in-person RES/Nike program stops.</p>
-            <div class="panel-meta"><span>Curated content + In-person</span><span>Mid-2000s</span><span>Film · Live screening</span></div>
-          </div>
-        </article>
-        <article class="panel tone-e">
-          <div class="panel-deco" aria-hidden="true"></div>
-          <div class="panel-inner">
-            <p class="panel-client">JP Morgan Securities</p>
-            <h3 class="panel-title">JP Morgan Securities programs</h3>
-            <p class="panel-summary">Executive virtual programming for institutional audiences — precise run-of-show, controlled delivery, and production discipline for financial services leadership.</p>
-            <div class="panel-meta"><span>Virtual</span><span>ON24 era</span><span>Executive · Webcast</span></div>
-          </div>
-        </article>
-      </section>
-      <section class="block" id="lab">
-        <div class="block-head">
-          <p class="block-label">03 — Lab</p>
-          <h2>Driller Academy</h2>
-          <p>Generative AI video for skilled-trades training — a working prototype for the Driller Academy / workforce development track.</p>
-        </div>
-        <article class="panel tone-f lab-feature">
-          <div class="panel-deco" aria-hidden="true"></div>
-          <div class="panel-inner">
-            <p class="panel-client">Skilled trades · Workforce</p>
-            <h3 class="panel-title">Driller Academy — Generative AI video</h3>
-            <p class="panel-summary">AI-assisted training film for the Driller Academy initiative — generative video as a practical tool for trade education and GTM storytelling around Wisconsin Fast Forward–aligned workforce work.</p>
-            <div class="panel-meta"><span>Generative AI</span><span>2026</span><span>Training film · Lab</span></div>
-            <button type="button" class="panel-play" data-open="video" data-id="driller-academy">Watch film</button>
-          </div>
-        </article>
-      </section>
-      <section class="block" id="screen">
-        <div class="block-head">
-          <p class="block-label">04 — Screen</p>
-          <h2>Decks &amp; film</h2>
-          <p>Open a PDF or PowerPoint as a slideshow — or play a hosted MP4 in the same theater.</p>
-        </div>
-        <div class="screen-split">
-          <div class="screen-col">
-            <p class="screen-kicker">Presentations</p>
-            <div class="media-cards" id="deckList"></div>
-          </div>
-          <div class="screen-col">
-            <p class="screen-kicker">Film</p>
-            <div class="media-cards" id="videoList"></div>
-          </div>
-        </div>
-      </section>
-      <section class="contact block" id="contact">
-        <p class="block-label">05 — Contact</p>
-        <h2>Start a conversation</h2>
-        <p class="contact-lead">Available for websites, experience &amp; production, and program systems on select projects.</p>
-        <a class="contact-email" href="mailto:hello@khristiankline.com">hello@khristiankline.com</a>
-      </section>
-      <footer class="site-end">
-        <span>© <span id="year">2026</span> Khristian Kline</span>
-        <a href="mailto:hello@khristiankline.com">khristiankline.com</a>
-      </footer>
-    </div>
-  </div>
-  <div class="theater" id="theater" hidden>
-    <div class="theater-bar">
-      <div class="theater-meta">
-        <span class="theater-kind" id="theaterKind">Film</span>
-        <span class="theater-title" id="theaterTitle">—</span>
-      </div>
-      <div class="theater-tools">
-        <button type="button" class="t-btn" id="btnClose" aria-label="Close theater">Close</button>
-      </div>
-    </div>
-    <div class="theater-stage" id="theaterStage">
-      <div class="stage-track" id="stageTrack">
-        <div class="video-wrap" id="videoWrap" hidden>
-          <video id="theaterVideo" playsinline></video>
-        </div>
-      </div>
-    </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@6d0d1e0/websites-data.js"></script>
-  <script src="https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@6d0d1e0/main.js"></script>
-  <script>
-  // Patch section IDs and Driller Academy video after main.js loads
-  (function () {
-    // Re-render section observer is already bound; main from 6d0d1e0 still has old ids —
-    // Experience section is static HTML so no JS needed for panels.
-    // Wire Lab watch button to open video when file exists.
-    document.querySelectorAll('[data-open="video"][data-id="driller-academy"]').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var src = 'https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@main/media/videos/driller-academy.mp4';
-        if (window.KKTheater && window.KKTheater.openVideo) {
-          window.KKTheater.openVideo(src, 'Driller Academy — Generative AI video', '');
-        } else {
-          // Minimal fallback player
-          var t = document.getElementById('theater');
-          var v = document.getElementById('theaterVideo');
-          var wrap = document.getElementById('videoWrap');
-          if (t && v && wrap) {
-            wrap.hidden = false;
-            v.src = src;
-            t.hidden = false;
-            v.play().catch(function () {});
-            document.getElementById('btnClose').onclick = function () {
-              v.pause(); t.hidden = true;
-            };
-          } else {
-            window.open(src, '_blank');
-          }
-        }
-      });
-    });
-  })();
-  </script>
-</body>
-</html>
+<div class="shell">
+<aside class="sidebar" aria-label="Primary">
+<a href="#top" class="logo">KK</a>
+<nav class="side-nav">
+<a href="#web-development">Web</a>
+<a href="#experience-production">Experience</a>
+<a href="#lab">Lab</a>
+<a href="#contact">Contact</a>
+</nav>
+<span class="side-footer">khristiankline.com</span>
+</aside>
+<div class="main">
+<div class="mobile-bar">
+<a href="#top" class="logo">KK</a>
+<button type="button" class="burger" id="menuBtn" aria-label="Menu" aria-expanded="false"><span></span></button>
+</div>
+<nav class="mobile-drawer" id="mobileNav">
+<a href="#web-development">Web Development</a>
+<a href="#experience-production">Experience &amp; Production</a>
+<a href="#lab">Lab</a>
+<a href="#contact">Contact</a>
+</nav>
+<header class="hero" id="top">
+<h1 class="hero-name">Khristian Kline</h1>
+<div class="hero-roles"><span>Web Development</span><span>Experience &amp; Production</span><span>Virtual &amp; In-person</span></div>
+<p class="hero-note">Digital products, live experiences, and program systems for brands that need craft under real constraints.</p>
+</header>
+<section class="block" id="web-development">
+<div class="block-head">
+<p class="block-label">01 — Web Development</p>
+<h2>Sites &amp; product surfaces</h2>
+<p>Live and in-development websites. Click a card for the full write-up.</p>
+</div>
+<div class="web-group" id="webLiveGroup"><div class="web-group-head"><h3 class="web-group-label">Live</h3></div><div class="web-list" id="webLiveList"></div></div>
+<div class="web-group" id="webDevGroup"><div class="web-group-head"><h3 class="web-group-label">In development</h3></div><div class="web-list" id="webDevList"></div></div>
+</section>
+<div class="showcase" id="showcase" hidden aria-hidden="true">
+<div class="showcase-backdrop" data-close-showcase></div>
+<div class="showcase-panel" role="dialog" aria-modal="true">
+<button type="button" class="showcase-close" data-close-showcase aria-label="Close">×</button>
+<div class="showcase-scroll">
+<div class="showcase-hero" id="scHero"></div>
+<div class="showcase-body">
+<p class="showcase-status" id="scStatus"></p>
+<h2 class="showcase-title" id="scTitle"></h2>
+<p class="showcase-summary" id="scSummary"></p>
+<div class="showcase-meta" id="scMeta"></div>
+<div class="showcase-desc" id="scDesc"></div>
+<div class="showcase-stack" id="scStack"></div>
+<div class="showcase-media" id="scMedia"></div>
+<div class="showcase-shots" id="scShots"></div>
+<a class="showcase-link" id="scLink" target="_blank" rel="noopener" hidden>Visit site →</a>
+</div></div></div></div>
+<section class="block" id="experience-production">
+<div class="block-head">
+<p class="block-label">02 — Experience &amp; Production</p>
+<h2>In-person, virtual, and hybrid programs</h2>
+<p>Click any project for the full story — images, slideshows, or film when media is available.</p>
+</div>
+<div class="exp-list" id="expList"></div>
+</section>
+<section class="block" id="lab">
+<div class="block-head">
+<p class="block-label">03 — Lab</p>
+<h2>Driller Academy</h2>
+<p>Generative AI video for skilled-trades training — open the card for the write-up and film.</p>
+</div>
+<div class="exp-list" id="labList"></div>
+</section>
+<section class="contact block" id="contact">
+<p class="block-label">04 — Contact</p>
+<h2>Start a conversation</h2>
+<p class="contact-lead">Available for websites, experience &amp; production, and program systems on select projects.</p>
+<a class="contact-email" href="mailto:hello@khristiankline.com">hello@khristiankline.com</a>
+</section>
+<footer class="site-end"><span>© <span id="year">2026</span> Khristian Kline</span></footer>
+</div></div>
+<script src="https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@6d0d1e0/websites-data.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@6d0d1e0/main.js"></script>
+<script src="/exp-app.js"></script>
+</body></html>
