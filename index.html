@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Khristian Kline — web development, experience design, and executive production for digital products and virtual events." />
+  <meta property="og:title" content="Khristian Kline" />
+  <meta property="og:description" content="Web development, experience design, and executive production." />
+  <title>Khristian Kline</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="shell">
+    <aside class="sidebar" aria-label="Primary">
+      <a href="#top" class="logo" aria-label="Khristian Kline home">KK</a>
+      <nav class="side-nav">
+        <a href="#web-development">Web Development</a>
+        <a href="#experience-design">Experience Design</a>
+        <a href="#executive-production">Executive Production</a>
+        <a href="#lab">Lab</a>
+        <a href="#screen">Screen</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <span class="side-footer">khristiankline.com</span>
+    </aside>
+
+    <div class="main">
+      <div class="mobile-bar">
+        <a href="#top" class="logo">KK</a>
+        <button type="button" class="burger" id="menuBtn" aria-label="Open menu" aria-expanded="false"><span></span></button>
+      </div>
+      <nav class="mobile-drawer" id="mobileNav" aria-label="Mobile">
+        <a href="#web-development">Web Development</a>
+        <a href="#experience-design">Experience Design</a>
+        <a href="#executive-production">Executive Production</a>
+        <a href="#lab">Lab</a>
+        <a href="#screen">Screen</a>
+        <a href="#contact">Contact</a>
+      </nav>
+
+      <header class="hero" id="top">
+        <h1 class="hero-name">Khristian Kline</h1>
+        <div class="hero-roles" aria-label="Roles">
+          <span>Web Development</span>
+          <span>Experience Design</span>
+          <span>Executive Production</span>
+        </div>
+        <p class="hero-note">
+          Digital products, virtual events, and program systems for brands that
+          need craft under real constraints.
+        </p>
+      </header>
+
+      <section class="block" id="web-development">
+        <div class="block-head">
+          <p class="block-label">01 — Web Development</p>
+          <h2>Sites & product surfaces</h2>
+          <p>Marketing sites, product shells, and brand systems — built for clarity, performance, and how people actually use them.</p>
+        </div>
+
+        <div class="web-group" id="webLiveGroup">
+          <p class="web-group-label">Live</p>
+          <div id="webLiveList" class="web-list"></div>
+        </div>
+
+        <div class="web-group" id="webDevGroup">
+          <p class="web-group-label">In development</p>
+          <div id="webDevList" class="web-list"></div>
+        </div>
+
+        <div class="web-admin owner-only" id="webAdmin" hidden>
+          <div class="web-admin-head">
+            <p class="web-group-label">Websites admin</p>
+            <button type="button" class="web-admin-add" id="webAdminAdd">Add site</button>
+          </div>
+          <div id="webAdminList" class="web-admin-list"></div>
+          <p class="web-admin-note">Edits stay on this device (localStorage). Screenshot paths are relative to the site root, e.g. <code>/media/websites/gtm-home.jpg</code>.</p>
+          <button type="button" class="web-admin-reset" id="webAdminReset">Reset to defaults</button>
+        </div>
+      </section>
+
+      <section class="block" id="experience-design">
+        <div class="block-head">
+          <p class="block-label">02 — Experience Design</p>
+          <h2>Virtual events & live experiences</h2>
+          <p>Summits, launches, and hybrid activations — run-of-show, platform, and audience design for moments that have to land live.</p>
+        </div>
+        <article class="panel tone-e">
+          <div class="panel-deco" aria-hidden="true"></div>
+          <div class="panel-inner">
+            <p class="panel-client">Enterprise SaaS</p>
+            <h3 class="panel-title">Global virtual summits</h3>
+            <p class="panel-summary">Multi-track executive programs with run-of-show discipline, platform orchestration, and audience design that holds under live pressure.</p>
+            <div class="panel-meta"><span>Summit</span><span>2018–2026</span><span>Executive production</span></div>
+          </div>
+        </article>
+        <article class="panel tone-f">
+          <div class="panel-deco" aria-hidden="true"></div>
+          <div class="panel-inner">
+            <p class="panel-client">Product launches</p>
+            <h3 class="panel-title">Launch experiences</h3>
+            <p class="panel-summary">Coordinated digital moments — keynote, breakout, and follow-through — for products that need a clean first impression at scale.</p>
+            <div class="panel-meta"><span>Launch</span><span>2015–2025</span><span>Experience design</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="block" id="executive-production">
+        <div class="block-head">
+          <p class="block-label">03 — Executive Production</p>
+          <h2>Programs that run on cadence</h2>
+          <p>Town halls, learning series, and enablement systems — designed once, delivered repeatedly, measured for the next cycle.</p>
+        </div>
+        <article class="panel tone-a">
+          <div class="panel-deco" aria-hidden="true"></div>
+          <div class="panel-inner">
+            <p class="panel-client">Fortune 500</p>
+            <h3 class="panel-title">Town hall systems</h3>
+            <p class="panel-summary">Recurring executive communications with consistent packaging, clear ownership, and post-event analytics that feed the next one.</p>
+            <div class="panel-meta"><span>Town Hall</span><span>Cadence</span><span>Program design</span></div>
+          </div>
+        </article>
+        <article class="panel tone-b">
+          <div class="panel-deco" aria-hidden="true"></div>
+          <div class="panel-inner">
+            <p class="panel-client">Learning & enablement</p>
+            <h3 class="panel-title">Series architecture</h3>
+            <p class="panel-summary">Multi-session learning programs with modular content, registration flow, and a viewing experience that stays legible across devices.</p>
+            <div class="panel-meta"><span>Learning Series</span><span>Enablement</span><span>Production systems</span></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="block" id="lab">
+        <div class="block-head">
+          <p class="block-label">04 — Lab</p>
+          <h2>Experiments & visual work</h2>
+          <p>Type, motion, and interface studies — the side of the practice that feeds the client work.</p>
+        </div>
+        <div class="lab-grid">
+          <article class="lab-card tone-c">
+            <div class="lab-card-inner">
+              <p class="lab-card-label">Type</p>
+              <h3>Editorial systems</h3>
+            </div>
+          </article>
+          <article class="lab-card tone-d">
+            <div class="lab-card-inner">
+              <p class="lab-card-label">Motion</p>
+              <h3>Interface studies</h3>
+            </div>
+          </article>
+          <article class="lab-card tone-e">
+            <div class="lab-card-inner">
+              <p class="lab-card-label">Photo</p>
+              <h3>Still direction</h3>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="block" id="screen">
+        <div class="block-head">
+          <p class="block-label">05 — Screen</p>
+          <h2>Decks & film</h2>
+          <p>Open a PDF or PowerPoint as a slideshow, or play a hosted MP4 — same theater, arrows, swipe, fullscreen.</p>
+        </div>
+        <div class="screen-split">
+          <div class="screen-col">
+            <p class="screen-col-label">Slideshows</p>
+            <div id="deckList" class="media-cards"></div>
+            <label class="dropzone" id="deckDrop">
+              <input type="file" accept=".pdf,.pptx,application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation" hidden />
+              <span>Drop PDF or PPTX</span>
+            </label>
+          </div>
+          <div class="screen-col">
+            <p class="screen-col-label">Film</p>
+            <div id="videoList" class="media-cards"></div>
+            <label class="dropzone" id="videoDrop">
+              <input type="file" accept="video/mp4,.mp4" hidden />
+              <span>Drop MP4</span>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section class="contact block" id="contact">
+        <div class="block-head">
+          <p class="block-label">06 — Contact</p>
+          <h2>Let’s talk</h2>
+        </div>
+        <p class="contact-lead">Available for websites, experience design, and executive production on select projects.</p>
+        <p class="contact-email"><a href="mailto:hello@khristiankline.com">hello@khristiankline.com</a></p>
+      </section>
+
+      <footer class="site-foot">
+        <span>© <span id="year"></span> Khristian Kline</span>
+        <span>khristiankline.com</span>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Showcase overlay for website detail -->
+  <div class="showcase" id="showcase" hidden aria-hidden="true">
+    <div class="showcase-bar">
+      <button type="button" class="t-btn" id="showcaseClose" aria-label="Close">Close</button>
+      <span class="showcase-title" id="showcaseTitle"></span>
+      <span class="showcase-status" id="showcaseStatus"></span>
+    </div>
+    <div class="showcase-body" id="showcaseBody"></div>
+  </div>
+
+  <!-- Theater (PDF / PPTX / MP4) -->
+  <div class="theater" id="theater" hidden aria-hidden="true">
+    <div class="theater-bar">
+      <button type="button" class="t-btn" id="tClose" aria-label="Close">Close</button>
+      <span class="theater-title" id="tTitle"></span>
+      <div class="theater-actions">
+        <button type="button" class="t-btn" id="tPrev" aria-label="Previous">‹</button>
+        <button type="button" class="t-btn" id="tNext" aria-label="Next">›</button>
+        <button type="button" class="t-btn" id="tFull" aria-label="Fullscreen">Full</button>
+      </div>
+    </div>
+    <div class="theater-stage" id="tStage">
+      <div class="stage-track" id="stageTrack"></div>
+      <p class="gesture-hint" id="gestureHint" hidden>Swipe · tap sides · pull down to close</p>
+    </div>
+    <div class="theater-dots" id="tDots"></div>
+  </div>
+
+  <script src="/theater.js"></script>
+  <script src="/main.js"></script>
+</body>
+</html>
