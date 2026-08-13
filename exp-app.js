@@ -33,7 +33,8 @@
     }).join("/");
     if (!ON_PROD) return encoded;
     if (/\.pptx?$/i.test(path) || /\.pdf$/i.test(path)) return RAW_BASE + encoded;
-    return CDN_BASE + encoded;
+    // Prefer raw for reliability with newly uploaded assets
+    return RAW_BASE + encoded;
   }
 
   var EXPERIENCES = [
@@ -252,12 +253,30 @@
     btn.type = "button";
     btn.className = "panel tone-" + (item.tone || "a");
     btn.style.cssText = "width:100%;text-align:left;cursor:pointer;border:none;display:block;font:inherit;color:inherit";
+
+    var shotHtml = "";
+    if (item.images && item.images[0]) {
+      shotHtml =
+        '<div class="panel-shot-wrap">' +
+        '<img class="panel-shot" src="' +
+        escapeHtml(mediaUrl(item.images[0])) +
+        '" alt="" loading="lazy" />' +
+        "</div>";
+    }
+
     btn.innerHTML =
       '<div class="panel-deco" aria-hidden="true"></div>' +
+      shotHtml +
       '<div class="panel-inner">' +
-      '<p class="panel-client">' + escapeHtml(item.client) + "</p>" +
-      '<h3 class="panel-title">' + escapeHtml(item.title) + "</h3>" +
-      '<p class="panel-summary">' + escapeHtml(item.summary) + "</p>" +
+      '<p class="panel-client">' +
+      escapeHtml(item.client) +
+      "</p>" +
+      '<h3 class="panel-title">' +
+      escapeHtml(item.title) +
+      "</h3>" +
+      '<p class="panel-summary">' +
+      escapeHtml(item.summary) +
+      "</p>" +
       '<div class="panel-meta">' +
       (item.format ? "<span>" + escapeHtml(item.format) + "</span>" : "") +
       (item.year ? "<span>" + escapeHtml(item.year) + "</span>" : "") +
