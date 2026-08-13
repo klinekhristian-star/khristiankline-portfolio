@@ -46,8 +46,8 @@
   var y = document.getElementById("year");
   if (y) y.textContent = String(new Date().getFullYear());
 
-  // ——— Websites: Live / In development + owner admin + showcase ———
-  var WEBSITES_KEY = "kk-websites-v2";
+  // Websites: Live / In development + owner admin + showcase
+  var WEBSITES_KEY = "kk-websites-v3";
   var DEFAULT_WEBSITES = (typeof window !== "undefined" && window.KK_DEFAULT_WEBSITES) ? window.KK_DEFAULT_WEBSITES : [];
 
   function loadWebsites() {
@@ -72,11 +72,9 @@
   var websites = loadWebsites();
 
   function escapeHtml(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&")
-      .replace(/</g, "<")
-      .replace(/>/g, ">")
-      .replace(/"/g, """);
+    var d = document.createElement("div");
+    d.textContent = s == null ? "" : String(s);
+    return d.innerHTML;
   }
 
   function renderWebLists() {
@@ -129,7 +127,7 @@
     if (!showcase) return;
     document.getElementById("scStatus").textContent =
       (w.status === "live" ? "Live" : "In development") +
-      (w.category ? " · " + w.category : "");
+      (w.category ? " \u00b7 " + w.category : "");
     document.getElementById("scTitle").textContent = w.title || "";
     document.getElementById("scSummary").textContent = w.summary || "";
     var descEl = document.getElementById("scDesc");
@@ -329,7 +327,7 @@
   }
 
   var ON_PROD = /khristiankline|vercel\.app/.test(location.hostname);
-  var MEDIA_PIN = "1a5f616";
+  var MEDIA_PIN = "main";
   var CDN_BASE = "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@" + MEDIA_PIN;
   var RAW_BASE = "https://raw.githubusercontent.com/klinekhristian-star/khristiankline-portfolio/" + MEDIA_PIN;
 
@@ -341,34 +339,8 @@
     return CDN_BASE + path;
   }
 
-  var DECKS = [
-    {
-      id: "exp-pdf",
-      title: "How a live moment holds",
-      note: "PDF slideshow · 6 slides",
-      kind: "pdf",
-      src: mediaUrl("/media/decks/experience-design.pdf"),
-      poster: mediaUrl("/media/decks/experience-design.jpg"),
-    },
-    {
-      id: "exp-pptx",
-      title: "Sample PowerPoint brief",
-      note: "PPTX slideshow · 5 slides",
-      kind: "pptx",
-      src: mediaUrl("/media/decks/sample-brief.pptx"),
-      poster: mediaUrl("/media/decks/sample-brief.jpg"),
-    },
-  ];
-
-  var VIDEOS = [
-    {
-      id: "showreel",
-      title: "Experience, on camera",
-      note: "Hosted MP4 · replace with event footage",
-      src: mediaUrl("/media/videos/showreel.mp4"),
-      poster: mediaUrl("/media/videos/showreel.jpg"),
-    },
-  ];
+  var DECKS = [];
+  var VIDEOS = [];
 
   function card(item, kindLabel, onOpen) {
     var b = document.createElement("button");
@@ -416,18 +388,4 @@
       videoList.appendChild(card(v, "MP4", function () { openFilm(v); }));
     });
   }
-
-  document.querySelectorAll("[data-open]").forEach(function (el) {
-    el.addEventListener("click", function () {
-      var kind = el.getAttribute("data-open");
-      var id = el.getAttribute("data-id");
-      if (kind === "pdf" || kind === "pptx") {
-        var d = DECKS.filter(function (x) { return x.id === id; })[0];
-        if (d) openDeck(d);
-      } else if (kind === "video") {
-        var v = VIDEOS.filter(function (x) { return x.id === id; })[0];
-        if (v) openFilm(v);
-      }
-    });
-  });
 })();
