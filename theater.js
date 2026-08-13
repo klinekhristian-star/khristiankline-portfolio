@@ -168,11 +168,9 @@
     return String(t)
       .replace(/&#x([0-9a-fA-F]+);/g, function (_, h) { return String.fromCharCode(parseInt(h, 16)); })
       .replace(/&#(\d+);/g, function (_, n) { return String.fromCharCode(+n); })
-      .replace(/&/g, "&")
-      .replace(/</g, "<")
-      .replace(/>/g, ">")
-      .replace(/"/g, '"')
-      .replace(/'/g, "'")
+      .replace(/&(amp|lt|gt|quot|apos);/g, function (_, n) {
+        return { amp: "&", lt: "<", gt: ">", quot: '"', apos: "'" }[n];
+      })
       .trim();
   }
 
