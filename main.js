@@ -48,10 +48,18 @@
     });
   }
 
-  var MEDIA_BASE =
-    /khristiankline|vercel\.app/.test(location.hostname)
-      ? "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@5800f46"
-      : "";
+  // Hosted media: jsDelivr for pdf/mp4/images. GitHub raw for PPTX —
+  // jsDelivr returns 403 on .pptx.
+  var ON_PROD = /khristiankline|vercel\.app/.test(location.hostname);
+  var MEDIA_PIN = "5800f46";
+  var CDN_BASE = "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@" + MEDIA_PIN;
+  var RAW_BASE = "https://raw.githubusercontent.com/klinekhristian-star/khristiankline-portfolio/" + MEDIA_PIN;
+
+  function mediaUrl(path) {
+    if (!ON_PROD) return path;
+    if (/\.pptx?$/i.test(path)) return RAW_BASE + path;
+    return CDN_BASE + path;
+  }
 
   var DECKS = [
     {
@@ -59,16 +67,16 @@
       title: "How a live moment holds",
       note: "PDF slideshow · 6 slides",
       kind: "pdf",
-      src: MEDIA_BASE + "/media/decks/experience-design.pdf",
-      poster: MEDIA_BASE + "/media/decks/experience-design.jpg",
+      src: mediaUrl("/media/decks/experience-design.pdf"),
+      poster: mediaUrl("/media/decks/experience-design.jpg"),
     },
     {
       id: "exp-pptx",
       title: "Sample PowerPoint brief",
       note: "PPTX slideshow · 5 slides",
       kind: "pptx",
-      src: MEDIA_BASE + "/media/decks/sample-brief.pptx",
-      poster: MEDIA_BASE + "/media/decks/sample-brief.jpg",
+      src: mediaUrl("/media/decks/sample-brief.pptx"),
+      poster: mediaUrl("/media/decks/sample-brief.jpg"),
     },
   ];
 
@@ -77,8 +85,8 @@
       id: "showreel",
       title: "Experience, on camera",
       note: "Hosted MP4 · 6 seconds · replace with event footage",
-      src: MEDIA_BASE + "/media/videos/showreel.mp4",
-      poster: MEDIA_BASE + "/media/videos/showreel.jpg",
+      src: mediaUrl("/media/videos/showreel.mp4"),
+      poster: mediaUrl("/media/videos/showreel.jpg"),
     },
   ];
 
