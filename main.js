@@ -50,7 +50,7 @@
 
   var MEDIA_BASE =
     /khristiankline|vercel\.app/.test(location.hostname)
-      ? "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@main"
+      ? "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@5800f46"
       : "";
 
   var DECKS = [
