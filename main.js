@@ -57,16 +57,18 @@
     {
       id: "exp-pdf",
       title: "How a live moment holds",
-      note: "Sample PDF brief · 6 slides",
+      note: "PDF slideshow · 6 slides",
       kind: "pdf",
       src: MEDIA_BASE + "/media/decks/experience-design.pdf",
+      poster: MEDIA_BASE + "/media/decks/experience-design.jpg",
     },
     {
       id: "exp-pptx",
       title: "Sample PowerPoint brief",
-      note: "Sample PPTX · 3 slides",
+      note: "PPTX slideshow · 5 slides",
       kind: "pptx",
       src: MEDIA_BASE + "/media/decks/sample-brief.pptx",
+      poster: MEDIA_BASE + "/media/decks/sample-brief.jpg",
     },
   ];
 
@@ -74,7 +76,7 @@
     {
       id: "showreel",
       title: "Experience, on camera",
-      note: "Sample MP4 · replace with event footage",
+      note: "Hosted MP4 · 6 seconds · replace with event footage",
       src: MEDIA_BASE + "/media/videos/showreel.mp4",
       poster: MEDIA_BASE + "/media/videos/showreel.jpg",
     },
@@ -102,26 +104,42 @@
     return b;
   }
 
+  function openDeck(d) {
+    if (!window.KKTheater) return;
+    if (d.kind === "pdf") window.KKTheater.openPdf(d.src, d.title);
+    else window.KKTheater.openPptxFromUrl(d.src, d.title);
+  }
+
+  function openFilm(v) {
+    if (!window.KKTheater) return;
+    window.KKTheater.openVideo(v.src, v.title, v.poster);
+  }
+
   var deckList = document.getElementById("deckList");
   if (deckList && window.KKTheater) {
     DECKS.forEach(function (d) {
-      deckList.appendChild(
-        card(d, d.kind.toUpperCase(), function () {
-          if (d.kind === "pdf") window.KKTheater.openPdf(d.src, d.title);
-          else window.KKTheater.openPptxFromUrl(d.src, d.title);
-        })
-      );
+      deckList.appendChild(card(d, d.kind.toUpperCase(), function () { openDeck(d); }));
     });
   }
 
   var videoList = document.getElementById("videoList");
   if (videoList && window.KKTheater) {
     VIDEOS.forEach(function (v) {
-      videoList.appendChild(
-        card(v, "MP4", function () {
-          window.KKTheater.openVideo(v.src, v.title);
-        })
-      );
+      videoList.appendChild(card(v, "MP4", function () { openFilm(v); }));
     });
   }
+
+  document.querySelectorAll("[data-open]").forEach(function (el) {
+    el.addEventListener("click", function () {
+      var kind = el.getAttribute("data-open");
+      var id = el.getAttribute("data-id");
+      if (kind === "pdf" || kind === "pptx") {
+        var d = DECKS.filter(function (x) { return x.id === id; })[0];
+        if (d) openDeck(d);
+      } else if (kind === "video") {
+        var v = VIDEOS.filter(function (x) { return x.id === id; })[0];
+        if (v) openFilm(v);
+      }
+    });
+  });
 })();

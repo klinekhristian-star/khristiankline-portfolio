@@ -112,6 +112,7 @@
             <h3 class="panel-title">Global Customer Summit</h3>
             <p class="panel-summary">Multi-day virtual customer conference — keynotes, breakouts, partner tracks, and on-demand library.</p>
             <div class="panel-meta"><span>Summit</span><span>2024</span><span>Thousands live · Multi-track</span></div>
+            <button type="button" class="panel-play" data-open="pdf" data-id="exp-pdf">View deck</button>
           </div>
         </article>
         <article class="panel tone-f">
@@ -121,6 +122,7 @@
             <h3 class="panel-title">Product Launch Experience</h3>
             <p class="panel-summary">Synchronized product reveal with executive keynote, demo stages, and regional follow-on sessions.</p>
             <div class="panel-meta"><span>Launch</span><span>2023</span><span>Global · Multi-region</span></div>
+            <button type="button" class="panel-play" data-open="video" data-id="showreel">Watch film</button>
           </div>
         </article>
         <article class="panel tone-a">
@@ -225,7 +227,7 @@
         <div class="block-head">
           <p class="block-label">05 — Screen</p>
           <h2>Decks & film</h2>
-          <p>Open a hosted brief as a slideshow, drop in your own PDF or PowerPoint, or play a hosted MP4. Replace the sample files when your materials are ready.</p>
+          <p>Viewers open a PDF or PowerPoint as a slideshow — arrows, dots, swipe, fullscreen. Hosted MP4s play in the same theater. Drop a file to preview; nothing leaves this browser. When your real briefs and footage are ready, they replace the samples.</p>
         </div>
 
         <div class="screen-split">
@@ -235,7 +237,7 @@
             <label class="dropzone" id="deckDrop">
               <input type="file" id="deckFile" accept=".pdf,.ppt,.pptx,application/pdf,application/vnd.ms-powerpoint,application/vnd.openxmlformats-officedocument.presentationml.presentation" hidden />
               <span class="drop-title">Drop a PDF or PPTX</span>
-              <span class="drop-note">Opens in the theater — nothing is uploaded.</span>
+              <span class="drop-note">Turns into a slideshow here. Export PPT as PDF for exact layout.</span>
             </label>
           </div>
           <div class="screen-col">
@@ -244,7 +246,7 @@
             <label class="dropzone" id="videoDrop">
               <input type="file" id="videoFile" accept="video/mp4,video/webm,video/quicktime" hidden />
               <span class="drop-title">Drop an MP4</span>
-              <span class="drop-note">Plays here in the theater. Hosted files live in /media/videos.</span>
+              <span class="drop-note">Plays here. Hosted films live in /media/videos.</span>
             </label>
           </div>
         </div>
@@ -275,6 +277,7 @@
         <span class="theater-count" id="theaterCount"></span>
         <button type="button" class="t-btn" id="btnPrev" aria-label="Previous slide">Prev</button>
         <button type="button" class="t-btn" id="btnNext" aria-label="Next slide">Next</button>
+        <button type="button" class="t-btn" id="btnOriginal" hidden>Original</button>
         <button type="button" class="t-btn" id="btnFs" aria-label="Fullscreen">Full</button>
         <button type="button" class="t-btn t-close" id="btnClose" aria-label="Close theater">Close</button>
       </div>
@@ -282,6 +285,7 @@
     <div class="theater-stage" id="theaterStage">
       <canvas id="pdfCanvas" hidden></canvas>
       <div class="pptx-slide" id="pptxSlide" hidden></div>
+      <iframe class="office-frame" id="officeFrame" title="PowerPoint" hidden></iframe>
       <div class="video-wrap" id="videoWrap" hidden>
         <video id="theaterVideo" playsinline></video>
         <div class="v-controls">
