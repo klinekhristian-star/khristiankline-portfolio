@@ -15,6 +15,9 @@
     showcase.querySelectorAll("[data-close-showcase]").forEach(function (el) {
       el.addEventListener("click", closeShowcase);
     });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && showcase && !showcase.hidden) closeShowcase();
+    });
   }
 
   var ON_PROD = /khristiankline|vercel\.app/.test(location.hostname);
@@ -27,6 +30,8 @@
     if (/^https?:\/\//i.test(path)) return path;
     if (!ON_PROD) return path;
     if (/\.pptx?$/i.test(path)) return RAW_BASE + path;
+    // PDFs: prefer raw GitHub so multi-page books load reliably
+    if (/\.pdf$/i.test(path)) return RAW_BASE + path;
     return CDN_BASE + path;
   }
 
@@ -39,7 +44,7 @@
       year: "2002–2006",
       tone: "a",
       summary: "Global touring digital film festival — curation, city operations, and live audience design across dozens of markets.",
-      description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.\n\nAdd stills, program books, or archival film under media when ready.",
+      description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.\n\nAttach stills or a program PDF when ready.",
       role: "40+ cities · Festival & live",
       images: [],
       slideshows: [],
@@ -53,7 +58,7 @@
       year: "Mid-2000s",
       tone: "b",
       summary: "Brand launch activation spanning live presence and digital extension for a global beverage house.",
-      description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.\n\nUpload launch stills, deck, or event film to this project’s media slots when available.",
+      description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.\n\nUpload launch stills or a deck PDF to this project when available.",
       role: "Launch · Hybrid",
       images: [],
       slideshows: [],
@@ -67,10 +72,17 @@
       year: "2006–2007",
       tone: "c",
       summary: "Fashion and lifestyle programs under Tribeca Enterprises — hybrid activations for a global apparel brand.",
-      description: "Campaign and experience programs for Diesel produced in the Tribeca Enterprises period — live moments coordinated with digital distribution.\n\nAdd campaign imagery, lookbooks, or film clips here.",
+      description: "Campaign and experience programs for Diesel produced in the Tribeca Enterprises period — live moments coordinated with digital distribution.\n\nThe multi-page Diesel book opens as a full-screen slideshow (swipe or use Prev / Next).",
       role: "Campaign · Hybrid",
       images: [],
-      slideshows: [],
+      slideshows: [
+        {
+          kind: "pdf",
+          src: "/media/experiences/diesel-book.pdf",
+          label: "View Diesel book",
+          title: "Diesel book"
+        }
+      ],
       videos: []
     },
     {
@@ -81,7 +93,7 @@
       year: "Mid-2000s",
       tone: "d",
       summary: "Curated original content and live screening events around Nike’s Ginga film — Brazilian football as brand storytelling.",
-      description: "Nike Ginga paired original documentary content with live screening events and RES/Nike program stops.\n\nIdeal media for this card: stills from screenings, poster art, or the film itself once hosted.",
+      description: "Nike Ginga paired original documentary content with live screening events and RES/Nike program stops.\n\nIdeal media: screening stills, poster art, a program PDF, or film once hosted.",
       role: "Film · Live screening",
       images: [],
       slideshows: [],
@@ -95,7 +107,7 @@
       year: "ON24 era",
       tone: "e",
       summary: "Executive virtual programming for institutional audiences — precise run-of-show and controlled delivery.",
-      description: "Virtual executive programs for JP Morgan Securities — webcast production with institutional discipline, clear ownership of run-of-show, and archive strategy.\n\nAttach a sample deck or anonymized session film when cleared for portfolio use.",
+      description: "Virtual executive programs for JP Morgan Securities — webcast production with institutional discipline and archive strategy.\n\nAttach a sample deck PDF when cleared for portfolio use.",
       role: "Executive · Webcast",
       images: [],
       slideshows: [],
@@ -112,7 +124,7 @@
       year: "2026",
       tone: "f",
       summary: "AI-assisted training film for the Driller Academy initiative — generative video for trade education and workforce GTM.",
-      description: "Lab piece for the Driller Academy / skilled-trades track: generative AI video as a practical tool for training storytelling and Wisconsin Fast Forward–aligned workforce work.\n\nHost the MP4 at /media/videos/driller-academy.mp4 so the Watch film control plays in-theater.",
+      description: "Lab piece for the Driller Academy / skilled-trades track: generative AI video as a practical tool for training storytelling and Wisconsin Fast Forward–aligned workforce work.\n\nHost the MP4 at /media/videos/driller-academy.mp4 so Watch film plays in-theater.",
       role: "Training film · Lab",
       images: [],
       slideshows: [],
@@ -126,6 +138,14 @@
       ]
     }
   ];
+
+  function openPdfSafe(src, title) {
+    if (window.KKTheater && window.KKTheater.openPdf) {
+      window.KKTheater.openPdf(src, title);
+      return;
+    }
+    window.open(src, "_blank", "noopener");
+  }
 
   function openProjectShowcase(item) {
     if (!showcase) return;
@@ -174,11 +194,9 @@
         b.type = "button";
         b.className = "panel-play";
         b.textContent = deck.label || "Open slideshow";
-        b.addEventListener("click", function () {
-          if (!window.KKTheater) return;
-          var src = mediaUrl(deck.src);
-          if (deck.kind === "pptx") window.KKTheater.openPptxFromUrl(src, deck.title || item.title);
-          else window.KKTheater.openPdf(src, deck.title || item.title);
+        b.addEventListener("click", function (e) {
+          e.stopPropagation();
+          openPdfSafe(mediaUrl(deck.src), deck.title || item.title);
         });
         mediaBox.appendChild(b);
       });
@@ -187,13 +205,14 @@
         b.type = "button";
         b.className = "panel-play";
         b.textContent = vid.title ? "Watch: " + vid.title : "Watch film";
-        b.addEventListener("click", function () {
+        b.addEventListener("click", function (e) {
+          e.stopPropagation();
           var src = mediaUrl(vid.src);
           var poster = mediaUrl(vid.poster || "");
           if (window.KKTheater && window.KKTheater.openVideo) {
             window.KKTheater.openVideo(src, vid.title || item.title, poster);
           } else {
-            window.open(src, "_blank");
+            window.open(src, "_blank", "noopener");
           }
         });
         mediaBox.appendChild(b);
