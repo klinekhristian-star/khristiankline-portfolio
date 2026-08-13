@@ -46,14 +46,264 @@
   var y = document.getElementById("year");
   if (y) y.textContent = String(new Date().getFullYear());
 
-  var ids = [
-    "web-development",
-    "experience-design",
-    "executive-production",
-    "lab",
-    "screen",
-    "contact",
-  ];
+  // ——— Websites: Live / In development + owner admin + showcase ———
+  var WEBSITES_KEY = "kk-websites-v2";
+  var DEFAULT_WEBSITES = (typeof window !== "undefined" && window.KK_DEFAULT_WEBSITES) ? window.KK_DEFAULT_WEBSITES : [];
+
+  function loadWebsites() {
+    try {
+      var raw = localStorage.getItem(WEBSITES_KEY);
+      if (raw) {
+        var parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length) return parsed;
+      }
+    } catch (e) {}
+    return DEFAULT_WEBSITES.map(function (w) {
+      return Object.assign({}, w, { stack: (w.stack || []).slice(), screenshots: (w.screenshots || []).slice() });
+    });
+  }
+
+  function saveWebsites(list) {
+    try {
+      localStorage.setItem(WEBSITES_KEY, JSON.stringify(list));
+    } catch (e) {}
+  }
+
+  var websites = loadWebsites();
+
+  function escapeHtml(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&")
+      .replace(/</g, "<")
+      .replace(/>/g, ">")
+      .replace(/"/g, """);
+  }
+
+  function renderWebLists() {
+    var liveList = document.getElementById("webLiveList");
+    var devList = document.getElementById("webDevList");
+    var liveGroup = document.getElementById("webLiveGroup");
+    var devGroup = document.getElementById("webDevGroup");
+    if (!liveList || !devList) return;
+
+    liveList.innerHTML = "";
+    devList.innerHTML = "";
+
+    var live = websites.filter(function (w) { return w.status === "live"; });
+    var dev = websites.filter(function (w) { return w.status === "development"; });
+
+    if (liveGroup) liveGroup.style.display = live.length ? "" : "none";
+    if (devGroup) devGroup.style.display = dev.length ? "" : "none";
+
+    function makeCard(w) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "web-card tone-" + (w.tone || (w.status === "live" ? "live" : "dev"));
+      btn.setAttribute("data-id", w.id);
+      var badge = w.status === "live" ? "Live" : "In development";
+      btn.innerHTML =
+        '<div class="panel-deco" aria-hidden="true"></div>' +
+        '<div class="web-card-inner">' +
+        '<span class="web-card-badge">' + badge + "</span>" +
+        (w.category
+          ? '<p class="web-card-category">' + escapeHtml(w.category) + "</p>"
+          : "") +
+        '<h3 class="web-card-title">' + escapeHtml(w.title) + "</h3>" +
+        '<p class="web-card-summary">' + escapeHtml(w.summary) + "</p>" +
+        '<div class="web-card-meta">' +
+        (w.year ? "<span>" + escapeHtml(w.year) + "</span>" : "") +
+        (w.role ? "<span>" + escapeHtml(w.role) + "</span>" : "") +
+        "</div></div>";
+      btn.addEventListener("click", function () {
+        openShowcase(w);
+      });
+      return btn;
+    }
+
+    live.forEach(function (w) { liveList.appendChild(makeCard(w)); });
+    dev.forEach(function (w) { devList.appendChild(makeCard(w)); });
+  }
+
+  var showcase = document.getElementById("showcase");
+  function openShowcase(w) {
+    if (!showcase) return;
+    document.getElementById("scStatus").textContent =
+      (w.status === "live" ? "Live" : "In development") +
+      (w.category ? " · " + w.category : "");
+    document.getElementById("scTitle").textContent = w.title || "";
+    document.getElementById("scSummary").textContent = w.summary || "";
+    var descEl = document.getElementById("scDesc");
+    descEl.innerHTML = "";
+    String(w.description || "")
+      .split(/\n\n+/)
+      .filter(Boolean)
+      .forEach(function (para) {
+        var p = document.createElement("p");
+        p.textContent = para;
+        descEl.appendChild(p);
+      });
+
+    var meta = document.getElementById("scMeta");
+    meta.innerHTML = "";
+    [w.client, w.year, w.role].filter(Boolean).forEach(function (t) {
+      var s = document.createElement("span");
+      s.textContent = t;
+      meta.appendChild(s);
+    });
+
+    var stack = document.getElementById("scStack");
+    stack.innerHTML = "";
+    (w.stack || []).forEach(function (t) {
+      var s = document.createElement("span");
+      s.textContent = t;
+      stack.appendChild(s);
+    });
+
+    var shots = document.getElementById("scShots");
+    shots.innerHTML = "";
+    (w.screenshots || []).forEach(function (src) {
+      var img = document.createElement("img");
+      img.src = typeof mediaUrl === "function" ? mediaUrl(src) : src;
+      img.alt = "";
+      shots.appendChild(img);
+    });
+
+    var hero = document.getElementById("scHero");
+    if (w.screenshots && w.screenshots[0]) {
+      var src0 = typeof mediaUrl === "function" ? mediaUrl(w.screenshots[0]) : w.screenshots[0];
+      hero.style.backgroundImage = 'url("' + src0 + '")';
+    } else {
+      hero.style.backgroundImage = "";
+      hero.style.background =
+        w.status === "live"
+          ? "linear-gradient(145deg, #0c1020 0%, #151a2e 55%, #1a2035 100%)"
+          : "linear-gradient(145deg, #141210 0%, #1e1a16 55%, #2a241e 100%)";
+    }
+
+    var link = document.getElementById("scLink");
+    if (w.url) {
+      link.href = w.url;
+      link.hidden = false;
+    } else {
+      link.hidden = true;
+      link.removeAttribute("href");
+    }
+
+    showcase.hidden = false;
+    showcase.setAttribute("aria-hidden", "false");
+    document.body.classList.add("showcase-open");
+  }
+
+  function closeShowcase() {
+    if (!showcase) return;
+    showcase.hidden = true;
+    showcase.setAttribute("aria-hidden", "true");
+    document.body.classList.remove("showcase-open");
+  }
+
+  if (showcase) {
+    showcase.querySelectorAll("[data-close-showcase]").forEach(function (el) {
+      el.addEventListener("click", closeShowcase);
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !showcase.hidden) closeShowcase();
+    });
+  }
+
+  function renderAdmin() {
+    var admin = document.getElementById("webAdmin");
+    var list = document.getElementById("webAdminList");
+    if (!admin || !list) return;
+    if (!document.body.classList.contains("owner-mode")) {
+      admin.hidden = true;
+      return;
+    }
+    admin.hidden = false;
+    list.innerHTML = "";
+    websites.forEach(function (w, idx) {
+      var row = document.createElement("div");
+      row.className = "web-admin-row";
+      row.innerHTML =
+        "<strong>" +
+        escapeHtml(w.title) +
+        "</strong> <span>" +
+        escapeHtml(w.status) +
+        '</span> <button type="button" data-edit="' +
+        idx +
+        '">Edit</button> <button type="button" data-del="' +
+        idx +
+        '">Delete</button>';
+      list.appendChild(row);
+    });
+    list.querySelectorAll("[data-edit]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        openWebForm(websites[+b.getAttribute("data-edit")], +b.getAttribute("data-edit"));
+      });
+    });
+    list.querySelectorAll("[data-del]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (!confirm("Delete this site?")) return;
+        websites.splice(+b.getAttribute("data-del"), 1);
+        saveWebsites(websites);
+        renderWebLists();
+        renderAdmin();
+      });
+    });
+  }
+
+  function openWebForm(existing, idx) {
+    var title = prompt("Title", existing ? existing.title : "");
+    if (title == null) return;
+    var status = prompt("Status: live or development", existing ? existing.status : "development");
+    if (status == null) return;
+    status = status === "live" ? "live" : "development";
+    var category = prompt("Category", existing ? existing.category || "" : "") || "";
+    var summary = prompt("Summary", existing ? existing.summary : "") || "";
+    var description = prompt("Description", existing ? existing.description : "") || "";
+    var role = prompt("Role", existing ? existing.role : "") || "";
+    var year = prompt("Year", existing ? existing.year : "") || "";
+    var stackStr = prompt("Stack (comma-separated)", existing ? (existing.stack || []).join(", ") : "") || "";
+    var url = prompt("URL (optional)", existing ? existing.url || "" : "") || "";
+    var shots = prompt("Screenshot paths (comma-separated)", existing ? (existing.screenshots || []).join(", ") : "") || "";
+    var item = {
+      id: existing && existing.id ? existing.id : "site-" + Date.now(),
+      title: title.trim(),
+      status: status,
+      category: category.trim(),
+      client: title.trim(),
+      year: year.trim(),
+      summary: summary.trim(),
+      description: description.trim(),
+      role: role.trim(),
+      stack: stackStr.split(",").map(function (s) { return s.trim(); }).filter(Boolean),
+      url: url.trim(),
+      screenshots: shots.split(",").map(function (s) { return s.trim(); }).filter(Boolean),
+      tone: status === "live" ? "live" : "dev",
+    };
+    if (idx != null && idx >= 0) websites[idx] = item;
+    else websites.push(item);
+    saveWebsites(websites);
+    renderWebLists();
+    renderAdmin();
+  }
+
+  var addBtn = document.getElementById("webAdminAdd");
+  if (addBtn) addBtn.addEventListener("click", function () { openWebForm(null, null); });
+  var resetBtn = document.getElementById("webAdminReset");
+  if (resetBtn) {
+    resetBtn.addEventListener("click", function () {
+      if (!confirm("Reset websites to defaults?")) return;
+      localStorage.removeItem(WEBSITES_KEY);
+      websites = loadWebsites();
+      renderWebLists();
+      renderAdmin();
+    });
+  }
+
+  renderWebLists();
+  renderAdmin();
+
+  var ids = ["web-development", "experience-design", "executive-production", "lab", "screen", "contact"];
   var links = document.querySelectorAll(".side-nav a");
   if ("IntersectionObserver" in window && links.length) {
     var map = {};
@@ -78,9 +328,8 @@
     });
   }
 
-  // Screen media
   var ON_PROD = /khristiankline|vercel\.app/.test(location.hostname);
-  var MEDIA_PIN = "9ebbf03";
+  var MEDIA_PIN = "1a5f616";
   var CDN_BASE = "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@" + MEDIA_PIN;
   var RAW_BASE = "https://raw.githubusercontent.com/klinekhristian-star/khristiankline-portfolio/" + MEDIA_PIN;
 
@@ -115,7 +364,7 @@
     {
       id: "showreel",
       title: "Experience, on camera",
-      note: "Hosted MP4 · 6 seconds · replace with event footage",
+      note: "Hosted MP4 · replace with event footage",
       src: mediaUrl("/media/videos/showreel.mp4"),
       poster: mediaUrl("/media/videos/showreel.jpg"),
     },
