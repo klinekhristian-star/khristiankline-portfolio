@@ -48,20 +48,25 @@
     });
   }
 
+  var MEDIA_BASE =
+    /khristiankline|vercel\.app/.test(location.hostname)
+      ? "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@main"
+      : "";
+
   var DECKS = [
     {
       id: "exp-pdf",
       title: "How a live moment holds",
       note: "Sample PDF brief · 6 slides",
       kind: "pdf",
-      src: "/media/decks/experience-design.pdf",
+      src: MEDIA_BASE + "/media/decks/experience-design.pdf",
     },
     {
       id: "exp-pptx",
       title: "Sample PowerPoint brief",
       note: "Sample PPTX · 3 slides",
       kind: "pptx",
-      src: "/media/decks/sample-brief.pptx",
+      src: MEDIA_BASE + "/media/decks/sample-brief.pptx",
     },
   ];
 
@@ -70,8 +75,8 @@
       id: "showreel",
       title: "Experience, on camera",
       note: "Sample MP4 · replace with event footage",
-      src: "/media/videos/showreel.mp4",
-      poster: "/media/videos/showreel.jpg",
+      src: MEDIA_BASE + "/media/videos/showreel.mp4",
+      poster: MEDIA_BASE + "/media/videos/showreel.jpg",
     },
   ];
 
