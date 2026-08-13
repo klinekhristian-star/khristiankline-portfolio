@@ -1,4 +1,19 @@
 (function () {
+  // Owner mode: drop zones only for you.
+  // Open https://khristiankline.com/?owner=1 once to unlock on this device.
+  // Use ?owner=0 to lock again.
+  try {
+    var params = new URLSearchParams(location.search);
+    if (params.get("owner") === "1") {
+      localStorage.setItem("kk-owner", "1");
+    } else if (params.get("owner") === "0") {
+      localStorage.removeItem("kk-owner");
+    }
+    if (localStorage.getItem("kk-owner") === "1" || params.get("owner") === "1") {
+      document.body.classList.add("owner-mode");
+    }
+  } catch (e) {}
+
   var btn = document.getElementById("menuBtn");
   var nav = document.getElementById("mobileNav");
   if (btn && nav) {
