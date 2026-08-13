@@ -273,10 +273,12 @@ p { text-wrap: pretty; margin: 0; }
 .media-copy p { font-size: 0.85rem; color: var(--fg-muted); }
 .media-go { font-size: 0.68rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); }
 .dropzone {
-  display: flex; flex-direction: column; gap: 0.35rem; margin-top: 1rem;
+  display: none;
+  flex-direction: column; gap: 0.35rem; margin-top: 1rem;
   padding: 1.5rem 1.25rem; border: 1px dashed var(--line); cursor: pointer;
   transition: border-color 0.2s ease, background 0.2s ease;
 }
+body.owner-mode .dropzone { display: flex; }
 .dropzone:hover, .dropzone.over { border-color: var(--gold); background: rgba(212,197,160,0.04); }
 .drop-title { font-family: var(--font-serif); font-size: 1.25rem; color: var(--fg); }
 .drop-note { font-size: 0.8rem; color: var(--fg-dim); }
@@ -397,4 +399,3 @@ body.theater-open { overflow: hidden; overscroll-behavior: none; }
   .v-controls #vVol { display: none; }
   .pptx-slide { aspect-ratio: 16 / 10; }
 }
-
