@@ -28,7 +28,6 @@
   function mediaUrl(path) {
     if (!path) return "";
     if (/^https?:\/\//i.test(path)) return path;
-    // Encode each path segment so spaces in filenames work
     var encoded = path.split("/").map(function (seg) {
       return seg ? encodeURIComponent(seg) : "";
     }).join("/");
@@ -46,9 +45,9 @@
       year: "2002–2006",
       tone: "a",
       summary: "Global touring digital film festival — curation, city operations, and live audience design across dozens of markets.",
-      description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.\n\nAttach stills or a program PDF when ready.",
+      description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.",
       role: "40+ cities · Festival & live",
-      images: [],
+      images: ["/media/experiences/resfest-home.jpg"],
       slideshows: [],
       videos: []
     },
@@ -60,9 +59,9 @@
       year: "Mid-2000s",
       tone: "b",
       summary: "Brand launch activation spanning live presence and digital extension for a global beverage house.",
-      description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.\n\nUpload launch stills or a deck PDF to this project when available.",
+      description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.",
       role: "Launch · Hybrid",
-      images: [],
+      images: ["/media/experiences/brahma-home.jpg"],
       slideshows: [],
       videos: []
     },
@@ -76,7 +75,7 @@
       summary: "Fashion and lifestyle programs under Tribeca Enterprises — hybrid activations for a global apparel brand.",
       description: "Campaign and experience programs for Diesel produced in the Tribeca Enterprises period — live moments coordinated with digital distribution.\n\nOpen the multi-page Diesel book as a full-screen slideshow (swipe or use Prev / Next).",
       role: "Campaign · Hybrid",
-      images: [],
+      images: ["/media/experiences/diesel-home.jpg"],
       slideshows: [
         {
           kind: "pdf",
@@ -95,9 +94,9 @@
       year: "Mid-2000s",
       tone: "d",
       summary: "Curated original content and live screening events around Nike’s Ginga film — Brazilian football as brand storytelling.",
-      description: "Nike Ginga paired original documentary content with live screening events and RES/Nike program stops.\n\nIdeal media: screening stills, poster art, a program PDF, or film once hosted.",
+      description: "Nike Ginga paired original documentary content with live screening events and RES/Nike program stops.",
       role: "Film · Live screening",
-      images: [],
+      images: ["/media/experiences/nike-ginga-home.jpg"],
       slideshows: [],
       videos: []
     },
@@ -109,9 +108,9 @@
       year: "ON24 era",
       tone: "e",
       summary: "Executive virtual programming for institutional audiences — precise run-of-show and controlled delivery.",
-      description: "Virtual executive programs for JP Morgan Securities — webcast production with institutional discipline and archive strategy.\n\nAttach a sample deck PDF when cleared for portfolio use.",
+      description: "Virtual executive programs for JP Morgan Securities — webcast production with institutional discipline and archive strategy.",
       role: "Executive · Webcast",
-      images: [],
+      images: ["/media/experiences/jpms-home.jpg"],
       slideshows: [],
       videos: []
     }
@@ -230,6 +229,8 @@
     var hero = document.getElementById("scHero");
     if (item.images && item.images[0]) {
       hero.style.backgroundImage = 'url("' + mediaUrl(item.images[0]) + '")';
+      hero.style.backgroundSize = "cover";
+      hero.style.backgroundPosition = "center top";
     } else {
       hero.style.backgroundImage = "";
       hero.style.background = "linear-gradient(145deg, #141210 0%, #1e1a16 55%, #2a241e 100%)";
