@@ -10,28 +10,30 @@ Personal portfolio for khristiankline.com.
 - Screen (PDF / PPTX slideshow + hosted MP4)
 - Contact
 
+## Web Development roster
+
+**Live**
+- GTM Insights Group — https://www.gtm-insights.com (Consultant Site)
+- Watchmen of the Streets — https://www.watchmenofthestreets.com (Non-Profit)
+
+**In development**
+- Music Venue Live — Video Streaming / E-commerce
+- Lifestyle Brand Site — Cellular Nutrition
+- Lifestyle Brand AI Coach — Brand Partner Marketing AI Coach
+- Job Board Site (Scout) — AI-powered personal job search tool
+- County Emergency Response Site — AI-powered radio coverage mapping
+
+Open `?owner=1` once to unlock owner mode (admin + Screen drop zones).
+
 ## Screen theater
 
 Viewers open hosted files as a slideshow or film.
 
 | Kind | Path | How it plays |
 | --- | --- | --- |
-| PDF | `media/decks/*.pdf` | Each page is a slide (arrows, dots, swipe, fullscreen) |
-| PPTX | `media/decks/*.pptx` | Slides reconstructed in the theater (title, body, images, background). Legacy `.ppt` should be saved as `.pptx` or exported as PDF |
+| PDF | `media/decks/*.pdf` | Each page is a slide |
+| PPTX | `media/decks/*.pptx` | Slides reconstructed in the theater |
 | MP4 | `media/videos/*.mp4` | Hosted player in the same theater |
-
-Add a card in `main.js` (`DECKS` or `VIDEOS`). Drop-zone files stay in the browser and are never uploaded.
 
 ## Deploy
 Static site on Vercel. Push to `main` for production.
-
-## Websites admin
-
-Open `?owner=1` once to unlock owner mode on a device.
-
-In the Web Development section you can:
-- Click a site card to open its showcase (description, stack, screenshots, optional live link)
-- Use **Websites admin** to add / edit / delete sites (saved in localStorage on that device)
-- Drop screenshot images into `media/websites/` and reference paths like `/media/websites/gtm-home.jpg` in the admin form
-
-Defaults: **GTM Insights Group** (Live) and **Music Venue Live** (In development).
