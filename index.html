@@ -63,25 +63,50 @@
         </div>
 
         <div class="web-group" id="webLiveGroup">
-          <p class="web-group-label">Live</p>
-          <div id="webLiveList" class="web-list"></div>
+          <div class="web-group-head">
+            <p class="web-group-label">Live</p>
+          </div>
+          <div class="web-list" id="webLiveList"></div>
         </div>
 
         <div class="web-group" id="webDevGroup">
-          <p class="web-group-label">In development</p>
-          <div id="webDevList" class="web-list"></div>
+          <div class="web-group-head">
+            <p class="web-group-label">In development</p>
+          </div>
+          <div class="web-list" id="webDevList"></div>
         </div>
 
         <div class="web-admin owner-only" id="webAdmin" hidden>
-          <div class="web-admin-head">
+          <div class="web-admin-bar">
             <p class="web-group-label">Websites admin</p>
-            <button type="button" class="web-admin-add" id="webAdminAdd">Add site</button>
+            <button type="button" class="t-btn" id="webAdminAdd">Add site</button>
+            <button type="button" class="t-btn" id="webAdminReset">Reset defaults</button>
           </div>
-          <div id="webAdminList" class="web-admin-list"></div>
-          <p class="web-admin-note">Edits stay on this device (localStorage). Screenshot paths are relative to the site root, e.g. <code>/media/websites/gtm-home.jpg</code>.</p>
-          <button type="button" class="web-admin-reset" id="webAdminReset">Reset to defaults</button>
+          <div id="webAdminList"></div>
+          <p class="web-admin-hint">Edits stay on this device (localStorage). Screenshot paths e.g. <code>/media/websites/name.jpg</code></p>
         </div>
       </section>
+
+      <!-- Website showcase overlay -->
+      <div class="showcase" id="showcase" hidden aria-hidden="true">
+        <div class="showcase-backdrop" data-close-showcase></div>
+        <div class="showcase-panel" role="dialog" aria-modal="true" aria-labelledby="scTitle">
+          <button type="button" class="showcase-close" data-close-showcase aria-label="Close">×</button>
+          <div class="showcase-scroll">
+            <div class="showcase-hero" id="scHero"></div>
+            <div class="showcase-body">
+              <p class="showcase-status" id="scStatus"></p>
+              <h2 class="showcase-title" id="scTitle"></h2>
+              <p class="showcase-summary" id="scSummary"></p>
+              <div class="showcase-meta" id="scMeta"></div>
+              <div class="showcase-desc" id="scDesc"></div>
+              <div class="showcase-stack" id="scStack"></div>
+              <div class="showcase-shots" id="scShots"></div>
+              <a class="showcase-link" id="scLink" target="_blank" rel="noopener" hidden>Visit site →</a>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <section class="block" id="experience-design">
         <div class="block-head">
@@ -205,17 +230,6 @@
     </div>
   </div>
 
-  <!-- Showcase overlay for website detail -->
-  <div class="showcase" id="showcase" hidden aria-hidden="true">
-    <div class="showcase-bar">
-      <button type="button" class="t-btn" id="showcaseClose" aria-label="Close">Close</button>
-      <span class="showcase-title" id="showcaseTitle"></span>
-      <span class="showcase-status" id="showcaseStatus"></span>
-    </div>
-    <div class="showcase-body" id="showcaseBody"></div>
-  </div>
-
-  <!-- Theater (PDF / PPTX / MP4) -->
   <div class="theater" id="theater" hidden aria-hidden="true">
     <div class="theater-bar">
       <button type="button" class="t-btn" id="tClose" aria-label="Close">Close</button>
@@ -230,10 +244,13 @@
       <div class="stage-track" id="stageTrack"></div>
       <p class="gesture-hint" id="gestureHint" hidden>Swipe · tap sides · pull down to close</p>
     </div>
-    <div class="theater-dots" id="tDots"></div>
+    <div class="theater-dots" id="theaterDots"></div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
   <script src="/theater.js"></script>
+  <script src="/websites-data.js"></script>
   <script src="/main.js"></script>
 </body>
 </html>
