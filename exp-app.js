@@ -169,7 +169,8 @@
           src: "/media/videos/driller-academy.mp4",
           poster: "/media/videos/driller-academy.jpg"
         }
-      ]
+      ],
+      url: "https://www.gtm-insights.com/lab"
     }
   ];
 
@@ -271,11 +272,16 @@
       hero.style.background = "linear-gradient(145deg, #141210 0%, #1e1a16 55%, #2a241e 100%)";
     }
 
-    // Experience projects use PDFs / film in-theater — never show Visit site
+    // Experiences: no Visit site. Lab (and any item with url): show it.
     var link = document.getElementById("scLink");
     if (link) {
-      link.hidden = true;
-      link.removeAttribute("href");
+      if (item.url) {
+        link.href = item.url;
+        link.hidden = false;
+      } else {
+        link.hidden = true;
+        link.removeAttribute("href");
+      }
     }
 
     showcase.hidden = false;
