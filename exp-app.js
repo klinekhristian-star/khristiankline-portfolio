@@ -77,10 +77,17 @@
       year: "2002–2006",
       tone: "a",
       summary: "Global touring digital film festival — curation, city operations, and live audience design across dozens of markets.",
-      description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.",
+      description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.\n\nOpen the RESFEST program PDF as a full-screen slideshow.",
       role: "40+ cities · Festival & live",
       images: ["/media/experiences/resfest-home.jpg"],
-      slideshows: [],
+      slideshows: [
+        {
+          kind: "pdf",
+          src: "/media/experiences/RESFEST.pdf",
+          label: "View RESFEST program",
+          title: "RESFEST"
+        }
+      ],
       videos: []
     },
     {
