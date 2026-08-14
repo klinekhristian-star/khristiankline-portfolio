@@ -56,7 +56,7 @@ window.KK_DEFAULT_WEBSITES = [
     description: "Brand and storefront for Cellora Nutritionals: systems, vitamins, and skin essentials with verified potency and a 30-day money-back guarantee. Clean product hierarchy and partner-safe messaging.",
     role: "Design & front-end",
     stack: ["E-commerce", "Brand system"],
-    url: "",
+    url: "https://cellora-nutritionals.vercel.app/",
     screenshots: ["/media/websites/lifestyle-brand-home.jpg"],
     tone: "dev"
   },
