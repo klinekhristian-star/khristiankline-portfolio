@@ -41,7 +41,7 @@ window.KK_DEFAULT_WEBSITES = [
     description: "In-development streaming and commerce surface for live music venues and artists. Real-time concerts from independent U.S. clubs — multi-cam production, soundboard audio, and community watching together.",
     role: "Product design & development",
     stack: ["Streaming", "E-commerce", "Video"],
-    url: "https://www.musicvenuelive.com",
+    url: "https://stagepass-gtm-insights.vercel.app/",
     screenshots: ["/media/websites/music-venue-live-home.jpg"],
     tone: "dev"
   },
