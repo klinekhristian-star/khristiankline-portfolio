@@ -71,7 +71,7 @@ window.KK_DEFAULT_WEBSITES = [
     description: "USANA Brand Partner Success Agent: a compliance-first AI coach that helps partners sell products, place them in service locations, and recruit — without risking distributorship status.",
     role: "Product design · Agent systems",
     stack: ["AI agents", "Compliance", "Content"],
-    url: "",
+    url: "https://usana-demo-site.vercel.app/",
     screenshots: ["/media/websites/lifestyle-ai-tool-home.jpg"],
     tone: "dev"
   },
