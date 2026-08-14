@@ -156,10 +156,17 @@
       year: "ON24 era",
       tone: "e",
       summary: "Executive virtual programming for institutional audiences — precise run-of-show and controlled delivery.",
-      description: "Virtual executive programs for JP Morgan Securities — webcast production with institutional discipline and archive strategy.",
+      description: "Virtual executive programs for JP Morgan Securities — webcast production with institutional discipline and archive strategy.\n\nOpen View Experience for the program PDF as a full-screen slideshow.",
       role: "Executive · Webcast",
       images: ["/media/experiences/jpms-home.jpg"],
-      slideshows: [],
+      slideshows: [
+        {
+          kind: "pdf",
+          src: "/media/experiences/JPMS.pdf",
+          label: "View Experience",
+          title: "JP Morgan Securities"
+        }
+      ],
       videos: []
     }
   ];
