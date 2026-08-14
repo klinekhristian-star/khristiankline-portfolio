@@ -135,10 +135,17 @@
       year: "Mid-2000s",
       tone: "d",
       summary: "Curated original content and live screening events around Nike’s Ginga film — Brazilian football as brand storytelling.",
-      description: "Nike Ginga paired original documentary content with live screening events and RES/Nike program stops.",
+      description: "Nike Ginga paired original documentary content with live screening events and RES/Nike program stops.\n\nOpen View Experience for the program PDF as a full-screen slideshow.",
       role: "Film · Live screening",
       images: ["/media/experiences/nike-ginga-home.jpg"],
-      slideshows: [],
+      slideshows: [
+        {
+          kind: "pdf",
+          src: "/media/experiences/nike-ginga.pdf",
+          label: "View Experience",
+          title: "Nike Ginga"
+        }
+      ],
       videos: []
     },
     {
