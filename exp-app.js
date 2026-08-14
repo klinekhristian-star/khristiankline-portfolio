@@ -92,10 +92,18 @@
       year: "Mid-2000s",
       tone: "b",
       summary: "Brand launch activation spanning live presence and digital extension for a global beverage house.",
-      description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.",
+      description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.\n\nOpen View Experience for the Clube da Brahma program PDF as a full-screen slideshow.",
       role: "Launch · Hybrid",
+      hero: "/media/experiences/brahma-bottles.jpg",
       images: ["/media/experiences/brahma-home.jpg"],
-      slideshows: [],
+      slideshows: [
+        {
+          kind: "pdf",
+          src: "/media/experiences/Brahma.pdf",
+          label: "View Experience",
+          title: "Brahma"
+        }
+      ],
       videos: []
     },
     {
