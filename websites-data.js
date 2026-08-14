@@ -101,7 +101,7 @@ window.KK_DEFAULT_WEBSITES = [
     description: "Meshtastic Command planning surface for Calhoun County: dual EOCs, MCC trailer/truck/jeep placements by sector, CERT, ham, fire stations, and live weather — with coverage reliability overlays.",
     role: "Product design & front-end",
     stack: ["Maps", "GIS", "Mesh radio", "Planning"],
-    url: "",
+    url: "https://calhoun-emergency-comms.vercel.app/",
     screenshots: ["/media/websites/county-emergency-home.jpg"],
     tone: "dev"
   }
