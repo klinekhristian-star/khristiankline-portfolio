@@ -86,7 +86,7 @@ window.KK_DEFAULT_WEBSITES = [
     description: "Scout Job Search OS: AI-assisted workspace for role matching, application tracking, pipeline, and structured outreach under the user's control.",
     role: "Product design & engineering",
     stack: ["Python", "AI", "Automation", "Vercel"],
-    url: "",
+    url: "https://scout-repo-gtm-insights.vercel.app/",
     screenshots: ["/media/websites/job-board-scout-home.jpg"],
     tone: "dev"
   },
