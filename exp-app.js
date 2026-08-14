@@ -34,7 +34,6 @@
     return RAW_BASE + encoded;
   }
 
-  /** Simple reliable image — only paths that exist on GitHub */
   function cardImage(path, className) {
     if (!path) return "";
     var src = mediaUrl(path);
@@ -143,15 +142,15 @@
       format: "Generative AI",
       year: "2026",
       tone: "f",
-      summary: "AI-assisted training film for the Driller Academy initiative — generative video for trade education and workforce GTM.",
-      description: "Lab piece for the Driller Academy / skilled-trades track: generative AI video as a practical tool for training storytelling and Wisconsin Fast Forward–aligned workforce work.\n\nHost the MP4 at /media/videos/driller-academy.mp4 so Watch film plays in-theater.",
+      summary: "AI-assisted orientation film for the Driller Academy — training storytelling for skilled trades and workforce GTM.",
+      description: "Lab piece for the Driller Academy / skilled-trades track: generative AI video as a practical tool for training storytelling and Wisconsin Fast Forward–aligned workforce work.\n\nWatch the orientation film in-theater, or open the still as a project visual.",
       role: "Training film · Lab",
-      images: [],
+      images: ["/media/videos/driller-academy.jpg"],
       slideshows: [],
       videos: [
         {
           id: "driller-main",
-          title: "Driller Academy film",
+          title: "Driller Academy orientation",
           src: "/media/videos/driller-academy.mp4",
           poster: "/media/videos/driller-academy.jpg"
         }
