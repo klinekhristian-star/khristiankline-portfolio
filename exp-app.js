@@ -47,7 +47,6 @@
     );
   }
 
-  /** Hero for card + top of showcase; gallery is additional shots (not a duplicate of hero). */
   function resolveHero(item) {
     if (item.hero) return item.hero;
     if (item.images && item.images[0]) return item.images[0];
@@ -56,12 +55,10 @@
   function resolveGallery(item) {
     var imgs = item.images || [];
     if (item.hero) {
-      // Explicit hero — gallery is images list (may still include hero if you want it there)
       return imgs.filter(function (p) {
         return p && p !== item.hero;
       });
     }
-    // No hero field: first image is hero; only show remaining in gallery
     return imgs.length > 1 ? imgs.slice(1) : [];
   }
 
@@ -76,7 +73,6 @@
       summary: "Global touring digital film festival — curation, city operations, and live audience design across dozens of markets.",
       description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.\n\nOpen the RESFEST program PDF as a full-screen slideshow.",
       role: "40+ cities · Festival & live",
-      // hero optional; images[0] used as card + top. Add images[1+] for different bottom shots.
       images: ["/media/experiences/resfest-home.jpg"],
       slideshows: [
         {
@@ -86,8 +82,7 @@
           title: "RESFEST"
         }
       ],
-      videos: [],
-      url: ""
+      videos: []
     },
     {
       id: "brahma",
@@ -100,10 +95,8 @@
       description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.",
       role: "Launch · Hybrid",
       images: ["/media/experiences/brahma-home.jpg"],
-      // To get a different bottom shot: add e.g. "/media/experiences/brahma-detail.jpg" as images[1]
       slideshows: [],
-      videos: [],
-      url: ""
+      videos: []
     },
     {
       id: "diesel",
@@ -124,8 +117,7 @@
           title: "Diesel Book"
         }
       ],
-      videos: [],
-      url: ""
+      videos: []
     },
     {
       id: "nike-ginga",
@@ -139,8 +131,7 @@
       role: "Film · Live screening",
       images: ["/media/experiences/nike-ginga-home.jpg"],
       slideshows: [],
-      videos: [],
-      url: ""
+      videos: []
     },
     {
       id: "jpmorgan",
@@ -154,8 +145,7 @@
       role: "Executive · Webcast",
       images: ["/media/experiences/jpms-home.jpg"],
       slideshows: [],
-      videos: [],
-      url: ""
+      videos: []
     }
   ];
 
@@ -179,8 +169,7 @@
           src: "/media/videos/driller-academy.mp4",
           poster: "/media/videos/driller-academy.jpg"
         }
-      ],
-      url: ""
+      ]
     }
   ];
 
@@ -282,16 +271,11 @@
       hero.style.background = "linear-gradient(145deg, #141210 0%, #1e1a16 55%, #2a241e 100%)";
     }
 
-    // Visit site only when a real URL exists (experiences usually have none)
+    // Experience projects use PDFs / film in-theater — never show Visit site
     var link = document.getElementById("scLink");
     if (link) {
-      if (item.url) {
-        link.href = item.url;
-        link.hidden = false;
-      } else {
-        link.hidden = true;
-        link.removeAttribute("href");
-      }
+      link.hidden = true;
+      link.removeAttribute("href");
     }
 
     showcase.hidden = false;
