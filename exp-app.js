@@ -34,37 +34,17 @@
     return RAW_BASE + encoded;
   }
 
-  function responsivePicture(path, className) {
+  /** Simple reliable image — only paths that exist on GitHub */
+  function cardImage(path, className) {
     if (!path) return "";
-    var jpg = mediaUrl(path);
-    var stem = path.replace(/\.(jpe?g|png|webp)$/i, "");
-    var webp = mediaUrl(stem + ".webp");
-    var jpg640 = mediaUrl(stem + "-640.jpg");
-    var webp640 = mediaUrl(stem + "-640.webp");
+    var src = mediaUrl(path);
     var cls = className || "panel-shot";
-    var sizes = "(max-width: 700px) 100vw, 40rem";
     return (
-      "<picture>" +
-      '<source type="image/webp" srcset="' +
-      escapeHtml(webp640) +
-      " 640w, " +
-      escapeHtml(webp) +
-      ' 1000w" sizes="' +
-      sizes +
-      '" />' +
-      '<source type="image/jpeg" srcset="' +
-      escapeHtml(jpg640) +
-      " 640w, " +
-      escapeHtml(jpg) +
-      ' 1000w" sizes="' +
-      sizes +
-      '" />' +
       '<img class="' +
       cls +
       '" src="' +
-      escapeHtml(jpg) +
-      '" alt="" loading="lazy" decoding="async" width="1000" height="560" />' +
-      "</picture>"
+      escapeHtml(src) +
+      '" alt="" loading="lazy" decoding="async" width="1000" height="560" />'
     );
   }
 
@@ -221,7 +201,7 @@
     (item.images || []).forEach(function (src) {
       var wrap = document.createElement("div");
       wrap.className = "showcase-shot";
-      wrap.innerHTML = responsivePicture(src, "showcase-shot-img");
+      wrap.innerHTML = cardImage(src, "showcase-shot-img");
       shots.appendChild(wrap);
     });
 
@@ -296,7 +276,7 @@
     if (item.images && item.images[0]) {
       shotHtml =
         '<div class="panel-shot-wrap">' +
-        responsivePicture(item.images[0], "panel-shot") +
+        cardImage(item.images[0], "panel-shot") +
         "</div>";
     }
 
@@ -342,5 +322,5 @@
   var y = document.getElementById("year");
   if (y) y.textContent = String(new Date().getFullYear());
 
-  window.KKMedia = { mediaUrl: mediaUrl, responsivePicture: responsivePicture };
+  window.KKMedia = { mediaUrl: mediaUrl, cardImage: cardImage };
 })();
