@@ -22,7 +22,6 @@
 
   var ON_PROD = /khristiankline|vercel\.app/.test(location.hostname);
   var MEDIA_PIN = "main";
-  var CDN_BASE = "https://cdn.jsdelivr.net/gh/klinekhristian-star/khristiankline-portfolio@" + MEDIA_PIN;
   var RAW_BASE = "https://raw.githubusercontent.com/klinekhristian-star/khristiankline-portfolio/" + MEDIA_PIN;
 
   function mediaUrl(path) {
@@ -32,9 +31,41 @@
       return seg ? encodeURIComponent(seg) : "";
     }).join("/");
     if (!ON_PROD) return encoded;
-    if (/\.pptx?$/i.test(path) || /\.pdf$/i.test(path)) return RAW_BASE + encoded;
-    // Prefer raw for reliability with newly uploaded assets
     return RAW_BASE + encoded;
+  }
+
+  function responsivePicture(path, className) {
+    if (!path) return "";
+    var jpg = mediaUrl(path);
+    var stem = path.replace(/\.(jpe?g|png|webp)$/i, "");
+    var webp = mediaUrl(stem + ".webp");
+    var jpg640 = mediaUrl(stem + "-640.jpg");
+    var webp640 = mediaUrl(stem + "-640.webp");
+    var cls = className || "panel-shot";
+    var sizes = "(max-width: 700px) 100vw, 40rem";
+    return (
+      "<picture>" +
+      '<source type="image/webp" srcset="' +
+      escapeHtml(webp640) +
+      " 640w, " +
+      escapeHtml(webp) +
+      ' 1000w" sizes="' +
+      sizes +
+      '" />' +
+      '<source type="image/jpeg" srcset="' +
+      escapeHtml(jpg640) +
+      " 640w, " +
+      escapeHtml(jpg) +
+      ' 1000w" sizes="' +
+      sizes +
+      '" />' +
+      '<img class="' +
+      cls +
+      '" src="' +
+      escapeHtml(jpg) +
+      '" alt="" loading="lazy" decoding="async" width="1000" height="560" />' +
+      "</picture>"
+    );
   }
 
   var EXPERIENCES = [
@@ -181,11 +212,10 @@
     var shots = document.getElementById("scShots");
     shots.innerHTML = "";
     (item.images || []).forEach(function (src) {
-      var img = document.createElement("img");
-      img.src = mediaUrl(src);
-      img.alt = "";
-      img.loading = "lazy";
-      shots.appendChild(img);
+      var wrap = document.createElement("div");
+      wrap.className = "showcase-shot";
+      wrap.innerHTML = responsivePicture(src, "showcase-shot-img");
+      shots.appendChild(wrap);
     });
 
     var mediaBox = document.getElementById("scMedia");
@@ -252,15 +282,14 @@
     var btn = document.createElement("button");
     btn.type = "button";
     btn.className = "panel tone-" + (item.tone || "a");
-    btn.style.cssText = "width:100%;text-align:left;cursor:pointer;border:none;display:block;font:inherit;color:inherit";
+    btn.style.cssText =
+      "width:100%;text-align:left;cursor:pointer;border:none;display:block;font:inherit;color:inherit";
 
     var shotHtml = "";
     if (item.images && item.images[0]) {
       shotHtml =
         '<div class="panel-shot-wrap">' +
-        '<img class="panel-shot" src="' +
-        escapeHtml(mediaUrl(item.images[0])) +
-        '" alt="" loading="lazy" />' +
+        responsivePicture(item.images[0], "panel-shot") +
         "</div>";
     }
 
@@ -305,4 +334,6 @@
 
   var y = document.getElementById("year");
   if (y) y.textContent = String(new Date().getFullYear());
+
+  window.KKMedia = { mediaUrl: mediaUrl, responsivePicture: responsivePicture };
 })();
