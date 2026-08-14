@@ -47,6 +47,24 @@
     );
   }
 
+  /** Hero for card + top of showcase; gallery is additional shots (not a duplicate of hero). */
+  function resolveHero(item) {
+    if (item.hero) return item.hero;
+    if (item.images && item.images[0]) return item.images[0];
+    return "";
+  }
+  function resolveGallery(item) {
+    var imgs = item.images || [];
+    if (item.hero) {
+      // Explicit hero — gallery is images list (may still include hero if you want it there)
+      return imgs.filter(function (p) {
+        return p && p !== item.hero;
+      });
+    }
+    // No hero field: first image is hero; only show remaining in gallery
+    return imgs.length > 1 ? imgs.slice(1) : [];
+  }
+
   var EXPERIENCES = [
     {
       id: "resfest",
@@ -58,6 +76,7 @@
       summary: "Global touring digital film festival — curation, city operations, and live audience design across dozens of markets.",
       description: "RESFEST was a leading digital film festival that toured internationally at the height of desktop filmmaking and motion graphics culture.\n\nWork spanned program curation, city-level production, sponsorship integration, and the live experience of bringing digital cinema into theaters and parties worldwide.\n\nOpen the RESFEST program PDF as a full-screen slideshow.",
       role: "40+ cities · Festival & live",
+      // hero optional; images[0] used as card + top. Add images[1+] for different bottom shots.
       images: ["/media/experiences/resfest-home.jpg"],
       slideshows: [
         {
@@ -67,7 +86,8 @@
           title: "RESFEST"
         }
       ],
-      videos: []
+      videos: [],
+      url: ""
     },
     {
       id: "brahma",
@@ -80,8 +100,10 @@
       description: "Hybrid launch work for Brahma under the InBev umbrella — live activation paired with digital reach during the RES and early Tribeca years.",
       role: "Launch · Hybrid",
       images: ["/media/experiences/brahma-home.jpg"],
+      // To get a different bottom shot: add e.g. "/media/experiences/brahma-detail.jpg" as images[1]
       slideshows: [],
-      videos: []
+      videos: [],
+      url: ""
     },
     {
       id: "diesel",
@@ -102,7 +124,8 @@
           title: "Diesel Book"
         }
       ],
-      videos: []
+      videos: [],
+      url: ""
     },
     {
       id: "nike-ginga",
@@ -116,7 +139,8 @@
       role: "Film · Live screening",
       images: ["/media/experiences/nike-ginga-home.jpg"],
       slideshows: [],
-      videos: []
+      videos: [],
+      url: ""
     },
     {
       id: "jpmorgan",
@@ -130,7 +154,8 @@
       role: "Executive · Webcast",
       images: ["/media/experiences/jpms-home.jpg"],
       slideshows: [],
-      videos: []
+      videos: [],
+      url: ""
     }
   ];
 
@@ -154,7 +179,8 @@
           src: "/media/videos/driller-academy.mp4",
           poster: "/media/videos/driller-academy.jpg"
         }
-      ]
+      ],
+      url: ""
     }
   ];
 
@@ -195,9 +221,12 @@
     var stack = document.getElementById("scStack");
     if (stack) stack.innerHTML = "";
 
+    var heroSrc = resolveHero(item);
+    var gallery = resolveGallery(item);
+
     var shots = document.getElementById("scShots");
     shots.innerHTML = "";
-    (item.images || []).forEach(function (src) {
+    gallery.forEach(function (src) {
       var wrap = document.createElement("div");
       wrap.className = "showcase-shot";
       wrap.innerHTML = cardImage(src, "showcase-shot-img");
@@ -235,7 +264,7 @@
         });
         mediaBox.appendChild(b);
       });
-      if (!(item.images || []).length && !(item.slideshows || []).length && !(item.videos || []).length) {
+      if (!heroSrc && !gallery.length && !(item.slideshows || []).length && !(item.videos || []).length) {
         var note = document.createElement("p");
         note.className = "showcase-media-empty";
         note.textContent = "Media coming soon — images, slideshow, or film can be attached to this project.";
@@ -244,8 +273,8 @@
     }
 
     var hero = document.getElementById("scHero");
-    if (item.images && item.images[0]) {
-      hero.style.backgroundImage = 'url("' + mediaUrl(item.images[0]) + '")';
+    if (heroSrc) {
+      hero.style.backgroundImage = 'url("' + mediaUrl(heroSrc) + '")';
       hero.style.backgroundSize = "cover";
       hero.style.backgroundPosition = "center top";
     } else {
@@ -253,10 +282,16 @@
       hero.style.background = "linear-gradient(145deg, #141210 0%, #1e1a16 55%, #2a241e 100%)";
     }
 
+    // Visit site only when a real URL exists (experiences usually have none)
     var link = document.getElementById("scLink");
     if (link) {
-      link.hidden = true;
-      link.removeAttribute("href");
+      if (item.url) {
+        link.href = item.url;
+        link.hidden = false;
+      } else {
+        link.hidden = true;
+        link.removeAttribute("href");
+      }
     }
 
     showcase.hidden = false;
@@ -271,11 +306,12 @@
     btn.style.cssText =
       "width:100%;text-align:left;cursor:pointer;border:none;display:block;font:inherit;color:inherit";
 
+    var heroSrc = resolveHero(item);
     var shotHtml = "";
-    if (item.images && item.images[0]) {
+    if (heroSrc) {
       shotHtml =
         '<div class="panel-shot-wrap">' +
-        cardImage(item.images[0], "panel-shot") +
+        cardImage(heroSrc, "panel-shot") +
         "</div>";
     }
 
